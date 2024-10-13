@@ -1,0 +1,54 @@
+﻿@using Warranty.Common.Utility;
+@model Warranty.Web.Models.ContractTypeMasterViewModel
+
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="myModalLabel">
+        <i class='las la-box font-20'></i> @(Model.IsEdit ? "Edit" : "Add New") Contract Type
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+<form class="validation-wizard form-horizontal form-material needs-validation" id="ContractTypeMasterForm">
+    <div class="modal-body">
+        <input asp-for="ContractTypeMasterModel.EncId" type="hidden" />
+        <input asp-for="ContractTypeMasterModel.CreatedBy" type="hidden" />
+        <input asp-for="ContractTypeMasterModel.CreatedDate" type="hidden" />
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12">
+                <label asp-for="ContractTypeMasterModel.ContractTypeName">Contract Type Name</label> <span class="text-danger"> *</span>
+                <input asp-for="ContractTypeMasterModel.ContractTypeName" class="form-control req-border" required>
+                <span class="text-danger" asp-validation-for="ContractTypeMasterModel.ContractTypeName"></span>
+                <div class="invalid-feedback">
+                    Please enter the Contract Type Name.
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-xxl-12">
+            <label for="status-field" class="form-label">Status(Active/InActive)</label><span class="text-danger"> *</span>
+            <select class="form-select" aria-label="IsActive" id="txtIsActive" asp-for="ContractTypeMasterModel.IsActive" required>
+                <option>Select Status</option>
+                <option value="true" selected>Active</option>
+                <option value="false">In-Active</option>
+            </select>
+            <span class="text-danger" asp-validation-for="ContractTypeMasterModel.IsActive"></span>
+            <div class="invalid-feedback">
+                Please select a status.
+            </div>
+        </div>
+
+    </div>
+
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+        <button type="button" class="btn btn-success " onclick="Warranty.ContractTypeMaster.Save()"><i class="ri-save-line"></i> Submit</button>
+    </div>
+</form>
+
+

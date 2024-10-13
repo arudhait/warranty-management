@@ -1,0 +1,36 @@
+﻿@model Warranty.Web.Models.WarrantyListViewModel
+
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="myModalLabel">
+        <i class='fas fa-user font-20'></i> Model Detail
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+<form class="validation-wizard form-horizontal form-material needs-validation" id="ModelDetilsForm">
+    <div class="modal-body">
+        <input asp-for="ModelDetailModel.ModelDetId" type="hidden" />
+        <input asp-for="ModelDetailModel.WarrantyId" type="hidden" />
+        
+        <div class="row">
+            <div class="col-xxl-12 mb-3">
+                <label asp-for="ModelDetailModel.ModelId">Model Name</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="ModelDetailModel.ModelId" required asp-items="Model.ModelList" id="ModelId">
+                    <option value="">Select Model Name</option>
+                </select>
+                <span class="text-danger" asp-validation-for="ModelDetailModel.ModelId"></span>
+            </div>
+            <div class="col-xxl-12 mt-2">
+                <label asp-for="ModelDetailModel.ModelSerialNo">Model Serial No.</label> <span class="text-danger"> *</span>
+                <input asp-for="ModelDetailModel.ModelSerialNo" autocomplete="off" class="form-control req-border" required>
+                <span class="text-danger" asp-validation-for="ModelDetailModel.ModelSerialNo"></span>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success " onclick="Warranty.WarrantyList.SaveModelDet()"><i class="ri-save-line"></i> Save</button>
+        <button type="button" class="btn btn-danger waves-effect" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+    </div>
+</form>

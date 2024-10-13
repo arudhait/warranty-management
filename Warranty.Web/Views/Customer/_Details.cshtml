@@ -1,0 +1,132 @@
+﻿@using Warranty.Common.Utility;
+@model Warranty.Web.Models.CustMastViewModel
+
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="myModalLabel">
+        <i class='las la-box font-20'></i> @(Model.IsEdit ? "Edit" : "Add New") Customer
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+<form class="validation-wizard form-horizontal form-material needs-validation" id="CustomerForm">
+    <div class="modal-body">
+        <input asp-for="CustMastModel.EncId" type="hidden" />
+        <input asp-for="CustMastModel.CreatedBy" type="hidden" />
+        <input asp-for="CustMastModel.CreatedDate" type="hidden" />
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="CustMastModel.DoctorName">Doctor Name</label> <span class="text-danger"> *</span>
+                <input asp-for="CustMastModel.DoctorName" class="form-control req-border" required>
+                <span class="text-danger" asp-validation-for="CustMastModel.DoctorName"></span>
+            </div>
+            <div class="col-xxl-6">
+                <label asp-for="CustMastModel.HospitalName">Hospital Name</label> <span class="text-danger"> *</span>
+                <input asp-for="CustMastModel.HospitalName" class="form-control req-border" required>
+                <span class="text-danger" asp-validation-for="CustMastModel.HospitalName"></span>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12">
+                <label asp-for="CustMastModel.PostalAddress">Postal Address</label> <span class="text-danger"> *</span>
+                <textarea class="form-control" asp-for="CustMastModel.PostalAddress" rows="3" required></textarea>
+                <span class="text-danger" asp-validation-for="CustMastModel.PostalAddress"></span>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12">
+                <label asp-for="CustMastModel.Designation">Designation</label>
+                <input asp-for="CustMastModel.Designation" class="form-control req-border">
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label class="form-label">Mobile Number</label><span class="text-danger"> *</span>
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1"><i class="ri-phone-line"></i></span>
+                    <input type="text" class="form-control form-floating phone-inputmask" asp-for="CustMastModel.MobileNo" autocomplete="off" placeholder="(xxx) xxx-xxxx" required>
+                </div>
+                <span class="text-danger" asp-validation-for="CustMastModel.MobileNo"></span>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="CustMastModel.MobileNo"></span>
+                </div>
+            </div>
+            <div class="col-xxl-6">
+                <label class="form-label">Phone Number</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1"><i class="ri-phone-line"></i></span>
+                    <input type="text" class="form-control form-floating phone-inputmask" asp-for="CustMastModel.PhoneNo" autocomplete="off" placeholder="(xxx) xxx-xxxx">
+                </div>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="CustMastModel.Email">Email Id</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1"><i class="ri-user-3-line"></i></span>
+                    <input asp-for="CustMastModel.Email" autocomplete="off" class="form-control form-floating req-border">
+                </div>
+            </div>
+            <div class="col-xxl-6">
+                <label asp-for="CustMastModel.Pincode">Pincode</label> <span class="text-danger"> *</span>
+                <div class="input-group">
+                    <input class="form-control zipcode-inputmask req-border" type="text" autocomplete="off" asp-for="CustMastModel.Pincode" id="Pincode" required />
+                </div>
+                <span class="text-danger" asp-validation-for="CustMastModel.Pincode"></span>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="CustMastModel.Pincode"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-4">
+                <label asp-for="CustMastModel.City"></label>
+                <input asp-for="CustMastModel.City" autocomplete="off" class="form-control req-border">
+            </div>
+            <div class="col-xxl-4">
+                <label asp-for="CustMastModel.StateId">State</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="CustMastModel.StateId" required asp-items="Model.StateList" id="StateId">
+                    <option value="">Select State</option>
+                </select>
+                <span class="text-danger" asp-validation-for="CustMastModel.StateId"></span>
+            </div>
+            <div class="col-xxl-4">
+                <label asp-for="CustMastModel.DistrictId">District</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="CustMastModel.DistrictId" required asp-items="Model.DistrictList" id="DistrictId">
+                    <option value="">Select District</option>
+                </select>
+                <span class="text-danger" asp-validation-for="CustMastModel.DistrictId"></span>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="CustMastModel.PndtCertiNo">PNDT Certificate Number</label> <span class="text-danger"> *</span>
+                <input asp-for="CustMastModel.PndtCertiNo" class="form-control req-border" required>
+                <span class="text-danger" asp-validation-for="CustMastModel.PndtCertiNo"></span>
+                
+            </div>
+            <div class="col-xxl-6">
+                <label asp-for="CustMastModel.RegDate"> Date</label>
+                <input type="date" asp-for="CustMastModel.RegDate" class="form-control req-border" >
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12">
+                <label for="status-field" class="form-label">Status(Active/In-Active)</label><span class="text-danger"> *</span>
+                <select class="form-select" aria-label="IsActive" id="txtIsActive" asp-for="CustMastModel.IsActive" required>
+                    <option selected>Select Status</option>
+                    <option value="true">Active</option>
+                    <option value="false">In-Active</option>
+                </select>
+                <span class="text-danger" asp-validation-for="CustMastModel.IsActive"></span>
+             
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+        <button type="button" class="btn btn-success "onclick="Warranty.Customer.Save()"><i class="ri-save-line"></i> Submit</button>
+    </div>
+</form>
+

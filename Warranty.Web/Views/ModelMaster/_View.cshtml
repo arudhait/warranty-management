@@ -1,0 +1,36 @@
+﻿@model Warranty.Web.Models.ModelMasterViewModel
+
+<!-- Details View -->
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="myModalLabel">
+        <i class='fas fa-user font-20'></i> Details - Model Master
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+
+<form class="validation-wizard form-horizontal form-material needs-validation" id="MasterModelView">
+    <div class="modal-body">
+        <div class="mb-3">
+
+            <div class="row g-3 mb-3">
+                <div class="col-xxl-12">
+                    <label asp-for="ModelMasterModel.ModelNo">First Name</label>
+                    <input autocomplete="off" class="form-control req-border" asp-for="ModelMasterModel.ModelNo" disabled>
+                </div>
+                
+            </div>          
+            <div class="row g-3 mb-3">
+                
+                <div class="col-xxl-12">
+                    <label for="status-field" class="form-label">Status</label>
+                    <input type="text" class="form-control form-floating" value="@(Model.ModelMasterModel.IsActive?"IsActive":"InActive")" id="txtIsActive" asp-for="ModelMasterModel.IsActive" disabled>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</form>
+
+
+

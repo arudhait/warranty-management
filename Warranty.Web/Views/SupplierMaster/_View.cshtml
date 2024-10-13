@@ -1,0 +1,99 @@
+﻿@model Warranty.Web.Models.SupplierMasterViewModel
+
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="myModalLabel">
+        <i class='las la-box font-20'></i> Supplier Master
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+
+
+<form class="validation-wizard form-horizontal form-material needs-validation" id="SupplierMasterForm">
+    <div class="modal-body">
+        <input asp-for="SupplierMasterModel.EncId" type="hidden" />
+        <input asp-for="SupplierMasterModel.CreatedBy" type="hidden" />
+        <input asp-for="SupplierMasterModel.CreatedOn" type="hidden" />
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12">
+                <label asp-for="SupplierMasterModel.SupplierName">Supplier Name</label> <span class="text-danger"> *</span>
+                <input asp-for="SupplierMasterModel.SupplierName" class="form-control req-border" disabled>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label class="form-label">Mobile Number</label><span class="text-danger"> *</span>
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1"><i class="ri-phone-line"></i></span>
+                    <input type="text" class="form-control form-floating phone-inputmask" asp-for="SupplierMasterModel.ContactNo" autocomplete="off" placeholder="(xxx) xxx-xxxx" disabled>
+                </div>
+            </div>
+            <div class="col-xxl-6">
+                <label asp-for="SupplierMasterModel.EmailId">Email Id</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1"><i class="ri-user-3-line"></i></span>
+                    <input asp-for="SupplierMasterModel.EmailId" autocomplete="off" class="form-control form-floating req-border" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12">
+                <label asp-for="SupplierMasterModel.Address">Address</label> <span class="text-danger"> *</span>
+                <textarea class="form-control" asp-for="SupplierMasterModel.Address" rows="3" disabled></textarea>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-4">
+                <label asp-for="SupplierMasterModel.StateId">State</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="SupplierMasterModel.StateId" disabled asp-items="Model.StateList" id="StateId">
+                    <option value="">Select State</option>
+                </select>
+            </div>
+            <div class="col-xxl-4">
+                <label asp-for="SupplierMasterModel.City">City</label>
+                <input asp-for="SupplierMasterModel.City" autocomplete="off" class="form-control req-border" disabled>
+            </div>
+            <div class="col-xxl-4">
+                <label asp-for="SupplierMasterModel.ZipCode">Pincode</label> <span class="text-danger"> *</span>
+                <div class="input-group">
+                    <input class="form-control zipcode-inputmask req-border" type="text" autocomplete="off" asp-for="SupplierMasterModel.ZipCode" id="Pincode" disabled />
+                </div>
+                <span class="text-danger" asp-validation-for="SupplierMasterModel.ZipCode"></span>
+                <div class="invalid-feedback">
+                </div>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="SupplierMasterModel.ProductMatserId">Product</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="SupplierMasterModel.ProductMatserId" disabled asp-items="Model.StateList" id="ProductMasterId">
+                    <option value="">Select Product</option>
+                </select>
+            </div>
+            <div class="col-xxl-6">
+                <label asp-for="SupplierMasterModel.ProductPrice">Product Price</label> <span class="text-danger"> *</span>
+                <input asp-for="SupplierMasterModel.ProductPrice" class="form-control req-border" disabled>
+            </div>
+
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="SupplierMasterModel.SupplierSku">Supplier Sku</label> <span class="text-danger"> *</span>
+                <input asp-for="SupplierMasterModel.SupplierSku" class="form-control req-border" disabled>
+            </div>
+            <div class="col-xxl-6">
+                <label for="status-field" class="form-label">Status(Active/In-Active)</label><span class="text-danger"> *</span>
+                <select class="form-select" aria-label="IsActive" id="txtIsActive" asp-for="SupplierMasterModel.IsActive" disabled>
+                    <option selected>Select Status</option>
+                    <option value="true">Active</option>
+                    <option value="false">In-Active</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+    </div>
+</form>

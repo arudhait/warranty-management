@@ -1,0 +1,140 @@
+﻿@using Warranty.Common.Utility;
+@model Warranty.Web.Models.ProductMasterViewModel
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="myModalLabel">
+        <i class='las la-box font-20'></i> @(Model.IsEdit ? "Edit" : "Add New") Product
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+
+<form class="validation-wizard form-horizontal form-material needs-validation" id="ProductForm">
+    <div class="modal-body">
+        <input asp-for="ProductMasterModel.EncId" type="hidden" />
+        <input asp-for="ProductMasterModel.CreatedBy" type="hidden" />
+        <input asp-for="ProductMasterModel.CraetedDate" type="hidden" />
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="ProductMasterModel.ProductName">Product Name</label> <span class="text-danger"> *</span>
+                <input asp-for="ProductMasterModel.ProductName" autocomplete="off" class="form-control req-border" required>
+                <span class="text-danger" asp-validation-for="ProductMasterModel.ProductName"></span>
+                <div class="invalid-feedback">
+                    Enter The Product.
+                </div>
+            </div>
+            <div class="col-xxl-6">
+                <label asp-for="ProductMasterModel.Price">Product Price</label><span class="text-danger">*</span>
+                <input asp-for="ProductMasterModel.Price" autocomplete="off" class="form-control req-border">
+                <span class="text-danger" asp-validation-for="ProductMasterModel.Price"></span>
+                <div class="invalid-feedback">
+                    Enter The Product Price.
+                </div>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="ProductMasterModel.Qty">Qty</label> <span class="text-danger"> *</span>
+                <input asp-for="ProductMasterModel.Qty" autocomplete="off" class="form-control req-border" required>
+                <span class="text-danger" asp-validation-for="ProductMasterModel.Qty"></span>
+                <div class="invalid-feedback">
+                    Enter The Qty.
+                </div>
+            </div>
+            <div class="col-xxl-6">
+                <label asp-for="ProductMasterModel.Sku">Sku</label><span class="text-danger">*</span>
+                <input asp-for="ProductMasterModel.Sku" autocomplete="off" class="form-control req-border">
+                <span class="text-danger" asp-validation-for="ProductMasterModel.Sku"></span>
+                <div class="invalid-feedback">
+                    Enter The Product Sku.
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="ProductMasterModel.BatchNo">Batch No</label> <span class="text-danger"> *</span>
+                <input asp-for="ProductMasterModel.BatchNo" autocomplete="off" class="form-control req-border" required>
+                <span class="text-danger" asp-validation-for="ProductMasterModel.BatchNo"></span>
+                <div class="invalid-feedback">
+                    Enter The Batch No.
+                </div>
+            </div>
+            <div class="col-xxl-6">
+                <label asp-for="ProductMasterModel.Size">Size</label><span class="text-danger">*</span>
+                <input asp-for="ProductMasterModel.Size" autocomplete="off" class="form-control req-border">
+                <span class="text-danger" asp-validation-for="ProductMasterModel.Size"></span>
+                <div class="invalid-feedback">
+                    Enter The Product Size.
+                </div>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-12">
+                <label asp-for="ProductMasterModel.Description">Description</label> <span class="text-danger"> </span>
+                <textarea class="form-control" asp-for="ProductMasterModel.Description" rows="4"></textarea>
+                <span class="text-danger" asp-validation-for="ProductMasterModel.Description"></span>
+                <div class="invalid-feedback">
+                    Enter The Description.
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="ProductMasterModel.Warranty">Warranty</label> <span class="text-danger"> </span>
+                <select class="form-select" id="floatingSelect" asp-for="ProductMasterModel.Warranty" aria-label="Floating label select example">
+                    <option value="0">Select No Of Service</option>
+                    <option value="@((int)Enumeration.Warranty.One)">1</option>
+                    <option value="@((int)Enumeration.Warranty.Two)">2</option>
+                    <option value="@((int)Enumeration.Warranty.Three)">3</option>
+                    <option value="@((int)Enumeration.Warranty.Four)">4</option>
+                    <option value="@((int)Enumeration.Warranty.Five)">5</option>
+                    <option value="@((int)Enumeration.Warranty.Six)">6</option>
+                    <option value="@((int)Enumeration.Warranty.Seven)">7</option>
+                    <option value="@((int)Enumeration.Warranty.Eight)">8</option>
+                    <option value="@((int)Enumeration.Warranty.Nine)">9</option>
+                    <option value="@((int)Enumeration.Warranty.Ten)">10</option>
+                    <option value="@((int)Enumeration.Warranty.Eleven)">11</option>
+                    <option value="@((int)Enumeration.Warranty.Twelve)">12</option>
+                </select>
+                <span class="text-danger border-danger" asp-validation-for="ProductMasterModel.Warranty"></span>
+            </div>
+            <div class="col-xxl-6">
+                <label for="status-field" class="form-label">Status(Active/InActive)</label><span class="text-danger">*</span>
+                <select class="form-select" aria-label="IsActive" id="txtIsActive" asp-for="ProductMasterModel.IsActive">
+                    <option value="">Select Status</option>
+                    <option value="true" selected>Active</option>
+                    <option value="false">In-Active</option>
+                </select>
+                <span class="text-danger" asp-validation-for="ProductMasterModel.IsActive"></span>
+                <div class="invalid-feedback">
+                    Enter The Product Status.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+        <button type="button" class="btn btn-success " onclick="Warranty.ProductMaster.Save()"><i class="ri-save-line"></i> Submit</button>
+    </div>
+</form>
+
+@* <script>
+    (function () {
+        'user strict'
+        window.addEventListener('load', function () {
+            var forms = documemnt.getelememntByClassName(".needs-validation");
+            Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    from.classListAdd('was-validated');
+                }, false)
+            })
+        }, false)
+    })();
+</script> *@
+

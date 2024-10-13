@@ -1,0 +1,89 @@
+﻿@model Warranty.Web.Models.EnggMastViewModel
+
+<script src="~/assets/js/pages/password-addon.init.js"></script>
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title " id="myModalLabel">
+        <i class='fas fa-user font-20'></i> @(Model.IsEdit ? "Service" : "Add New") Engineer Allocation
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+
+<form class="validation-wizard form-horizontal form-material needs-validation " id="Allocationform">
+    <div class="modal-body">
+        <input asp-for="EnggMastModel.EncId" type="hidden" />
+        <input asp-for="EnggMastModel.UserMastModel.CreatedBy" type="hidden" />
+        <input asp-for="EnggMastModel.UserMastModel.CreatedDate" type="hidden" />
+        <input asp-for="EnggMastModel.EnggId" type="hidden" id="hidEnggId">
+
+        <div class="mb-3">
+            <label asp-for="EnggMastModel.EnggName"> Engineer Name </label> <span class="text-danger">*</span>
+            <input asp-for="EnggMastModel.EnggName" autocomplete="off" class="form-control req-border" disabled>
+            <span class="text-danger" asp-validation-for="EnggMastModel.EnggName"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="EnggMastModel.UserMastModel.UserName"> User Name </label> <span class="text-danger">*</span>
+            <input asp-for="EnggMastModel.UserMastModel.UserName" autocomplete="off" class="form-control req-border" required>
+            <span class="text-danger" asp-validation-for="EnggMastModel.UserMastModel.UserName"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="EnggMastModel.UserMastModel.Email">Email Id</label>
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"><i class="ri-user-3-line"></i></span>
+                <input asp-for="EnggMastModel.UserMastModel.Email" autocomplete="off" class="form-control form-floating req-border">
+            </div>
+            <span class="text-danger" asp-validation-for="EnggMastModel.UserMastModel.Email"></span>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="EnggMastModel.UserMastModel.UserPassword">User Password</label> <span class="text-danger"> *</span>
+                <div class="input-group auth-pass-inputgroup">
+                    <span class="input-group-text password-addon" id="password-addon" style="cursor:pointer;"><i class="ri-eye-line align-middle toggle-password"></i></span>
+                    <input type="password" asp-for="EnggMastModel.UserMastModel.UserPassword" autocomplete="off" class="form-control req-border password-input" placeholder="Enter New password" required>
+
+                </div>
+                <span class="text-danger" asp-validation-for="EnggMastModel.UserMastModel.UserPassword"></span>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="EnggMastModel.UserMastModel.UserPassword"></span>
+                </div>
+            </div>
+            <div class="col-xxl-6">
+                <label class="form-label" for="validationCustomUsername">Confirm Password</label>
+                <div class="input-group auth-pass-inputgroup">
+                    <span class="input-group-text password-addon" id="password-addon" style="cursor:pointer;"><i class="ri-eye-line align-middle toggle-password"></i></span>
+                    <input type="Password" id="passwordTextConfirm" asp-for="EnggMastModel.UserMastModel.ConfirmPassword" class="form-control form-floating pe-5 password-input" placeholder="Enter Confirm Password" id="validationCustomUsername" required>
+                    <div class="invalid-feedback">
+                        <span asp-validation-for="EnggMastModel.UserMastModel.ConfirmPassword"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="EnggMastModel.UserMastModel.RoleId">Select Role</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="EnggMastModel.UserMastModel.RoleId" asp-items="Model.RoleList" id="RoleId" disabled>
+                    <option value="">Select Role</option>
+                </select>
+                <span class="text-danger" asp-validation-for="EnggMastModel.UserMastModel.RoleId"></span>
+            </div>
+            <div class="col-xxl-6">
+                <label for="status-field" class="form-label">Status(Active/In-Active)</label><span class="text-danger"> *</span>
+                <select class="form-select" aria-label="IsActive" id="txtIsActive" asp-for="EnggMastModel.UserMastModel.IsActive" disabled>
+                    <option selected>Select Status</option>
+                    <option value="true">Active</option>
+                    <option value="false">In-Active</option>
+                </select>
+                <span class="text-danger" asp-validation-for="EnggMastModel.UserMastModel.IsActive"></span>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+        <button type="button" class="btn btn-success " onclick="Warranty.Engineer.SaveAllocation()"><i class="ri-save-line"></i> Submit</button>
+    </div>
+</form>
+

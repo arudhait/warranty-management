@@ -1,0 +1,35 @@
+﻿@model Warranty.Web.Models.WarrantyListViewModel
+
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="myModalLabel">
+        <i class='fas fa-user font-20'></i> Prob Detail
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+<form class="validation-wizard form-horizontal form-material needs-validation" id="ProbDetilsForm">
+    <div class="modal-body">
+        <input asp-for="ProbDetailModel.ProbId" type="hidden" />
+        <input asp-for="ProbDetailModel.WarrantyId" type="hidden" />
+
+        <div class="row">
+            <div class="col-xxl-12 mt-2">
+                <label asp-for="ProbDetailModel.ProbName">Prob Name</label> <span class="text-danger"> *</span>
+                <input asp-for="ProbDetailModel.ProbName" autocomplete="off" class="form-control req-border" required>
+                <span class="text-danger" asp-validation-for="ProbDetailModel.ProbName"></span>
+            </div>
+
+            <div class="col-xxl-12 mt-2">
+                <label asp-for="ProbDetailModel.ProbSerialNo">Prob Serial No.</label> <span class="text-danger"> *</span>
+                <input asp-for="ProbDetailModel.ProbSerialNo" autocomplete="off" class="form-control req-border" required>
+                <span class="text-danger" asp-validation-for="ProbDetailModel.ProbSerialNo"></span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success " onclick="Warranty.WarrantyList.SaveProbDet()"><i class="ri-save-line"></i> Save</button>
+        <button type="button" class="btn btn-danger waves-effect" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+    </div>
+</form>

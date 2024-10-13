@@ -1,0 +1,61 @@
+﻿@model Warranty.Web.Models.ProductMasterViewModel
+
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="myModalLabel">
+        <i class='fas fa-user font-20'></i> Details - Product Master
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+
+<form class="validation-wizard form-horizontal form-material needs-validation" id="PMView">
+    <div class="modal-body">
+        <div class="mb-3">
+            <div class="row">
+                <div class="col-6 mb-3">
+                    <label asp-for="ProductMasterModel.ProductName">Product Name</label>
+                    <input autocomplete="off" class="form-control req-border" asp-for="ProductMasterModel.ProductName" disabled>
+                </div>
+                <div class="col-6 mb-3">
+                    <label asp-for="ProductMasterModel.Price">Price</label>
+                    <input autocomplete="off" class="form-control req-border" asp-for="ProductMasterModel.Price" disabled>
+                </div>
+            </div>           
+            <div class="row">
+                <div class="col-6 mb-3">
+                    <label asp-for="ProductMasterModel.Qty">Qty</label>
+                    <input autocomplete="off" class="form-control req-border" asp-for="ProductMasterModel.Qty" disabled>
+                </div>
+                <div class="col-6 mb-3">
+                    <label asp-for="ProductMasterModel.Sku">Sku</label>
+                    <input autocomplete="off" class="form-control req-border" asp-for="ProductMasterModel.Sku" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 mb-3">
+                    <label asp-for="ProductMasterModel.BatchNo">Batch No</label>
+                    <input autocomplete="off" class="form-control req-border" asp-for="ProductMasterModel.BatchNo" disabled>
+                </div>
+                <div class="col-6 mb-3">
+                    <label asp-for="ProductMasterModel.Size">Size</label>
+                    <input autocomplete="off" class="form-control req-border" asp-for="ProductMasterModel.Size" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 mb-3">
+                    <label asp-for="ProductMasterModel.Warranty">Warranty</label>
+                    <input autocomplete="off" class="form-control req-border" asp-for="ProductMasterModel.Warranty" disabled>
+                </div>
+                <div class="col-6 mb-3">
+                    <label for="status-field" class="form-label">Status</label>
+                    <input type="text" class="form-control form-floating" value="@(Model.ProductMasterModel.IsActive?"IsActive":"InActive")" id="txtIsActive" asp-for="ProductMasterModel.IsActive" disabled>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ProductMasterModel.Description">Description</label>
+                <input autocomplete="off" class="form-control req-border" asp-for="ProductMasterModel.Description" disabled>
+            </div>
+          
+        </div>
+    </div>
+</form>

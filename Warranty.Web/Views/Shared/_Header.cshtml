@@ -1,0 +1,82 @@
+﻿<header id="page-topbar">
+    <div class="layout-width" style="background-color:#132649 !important">
+        <div class="navbar-header">
+            <div class="d-flex">
+                <!-- LOGO -->
+                <div class="navbar-brand-box horizontal-logo">
+                    <a href="@Url.Action("Index", "Dashborad")" class="logo logo-dark">
+                        <span class="logo-sm">
+                            <img src="~/assets/images/alphaderasmall.png" alt="" height="22">
+                        </span>
+                        <span class="logo-lg">
+                            <img src="~/assets/images/Group 2257.png" alt="" height="17">
+                        </span>
+                    </a>
+
+                    <a href="@Url.Action("Index", "Dashborad")" class="logo logo-light">
+                        <span class="logo-sm">
+                            <img src="~/assets/images/alphaderasmall.png" alt="" height="22">
+                        </span>
+                        <span class="logo-lg">
+                            <img src="~/assets/images/Group 2257.png" alt="" height="17">
+                        </span>
+                    </a>
+                </div>
+
+                <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
+                        id="topnav-hamburger-icon">
+                    <span class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </button>
+
+                <form class="app-search d-none d-md-block">
+                    <div class="position-relative">
+                        <input type="text" class="form-control" placeholder="Search..." autocomplete="off" id="search-options" value="">
+                        <span class="mdi mdi-magnify search-widget-icon"></span>
+                        <span class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none" id="search-close-options"></span>
+                    </div>
+                    <div class="dropdown-menu dropdown-menu-lg" id="search-dropdown">
+                        <div data-simplebar style="max-height: 320px;">
+                            <!-- item-->
+                            <div class="dropdown-header">
+                                <h6 class="text-overflow text-muted mb-0 text-uppercase">Recent Searches</h6>
+                            </div>
+
+                            <div class="dropdown-item bg-transparent text-wrap">
+                                <a href="/Common/Table?table=Dashboard" class="btn btn-soft-secondary btn-sm rounded-pill">Dashboard <i class="mdi mdi-magnify ms-1"></i></a>
+                                <a href="/Common/Table?table=Lead" class="btn btn-soft-secondary btn-sm rounded-pill">Go To Leads <i class="mdi mdi-magnify ms-1"></i></a>
+                            </div>
+
+                            <!-- item-->
+                            <div class="dropdown-header mt-2">
+                                <h6 class="text-overflow text-muted mb-2 text-uppercase">Leads</h6>
+                            </div>
+
+                            <div class="notification-list" id="divLeads">
+                            </div>
+                        </div>
+
+                        <div class="text-center pt-3 pb-1">
+                            <a href="/Common/Table?table=Lead" class="btn btn-primary btn-sm">View All Leads <i class="ri-arrow-right-line ms-1"></i></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <div class="ms-1 header-item d-none d-sm-flex">
+                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode">
+                        <i class='bx bx-moon fs-22'></i>
+                    </button>
+                </div>
+                @await Component.InvokeAsync("UserNameHeader")
+            </div>
+
+        </div>
+    </div>
+
+</header>
+

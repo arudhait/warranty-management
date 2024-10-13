@@ -1,0 +1,243 @@
+﻿@using Warranty.Common.Utility;
+@model InwardOutwardViewModel
+@{
+    string title = Model.IsEdit ? "Edit" : "Add New";
+    ViewBag.Title = title + " Inward / Outward List";
+    ViewBag.PageName = $"<i class='las la-address-card'></i> {title} Inward / Outward List";
+    ViewBag.ParentPageName = "<i class='las la-home'></i> Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles {
+    <style>
+        tr td, th {
+            padding: .35rem .6rem !important;
+        }
+
+        .actionwidth {
+            min-width: 55px !important;
+            max-width: 55px !important;
+        }
+
+        .createdwidth {
+            min-width: 120px !important;
+            max-width: 120px !important;
+        }
+
+        .iconColorpadding {
+            padding: 3px;
+            font-size: 13px;
+            border-radius: 50%;
+        }
+
+        .form-floating > .form-control:not(:placeholder-shown) ~ label::after {
+            content: none !important;
+        }
+    </style>
+    <link href="~/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" />
+}
+<form class="validation-wizard form-horizontal form-material needs-validation" id="InwardOutwardForm">
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Inward / Outward Details</h4>
+                </div>
+                <div class="card-body">
+                    <input type="hidden" asp-for="InwardOutwardModel.CreatedBy" />
+                    <input type="hidden" asp-for="InwardOutwardModel.CreatedOn" />
+                    <input type="hidden" asp-for="InwardOutwardModel.EncId" />
+                    <input type="hidden" asp-for="InwardOutwardModel.InwardOutwardId" class="form-control" id="hidInwardOutwardId">
+
+                    <div class="row">
+                        <div class="col-lg-12 mb-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="floatingSelect" asp-for="InwardOutwardModel.IsType" aria-label="Floating label select example">
+                                    <option value="0">Select Status</option>
+                                    <option value="true">Inward</option>
+                                    <option value="false">Outward</option>
+                                </select>
+                                <label>Select Status</label>
+                            </div>
+                            <span class="text-danger border-danger" asp-validation-for="InwardOutwardModel.IsType"></span>
+                        </div>
+                    </div>
+
+                    <!-- Inward (Customer) Dropdown -->
+                    <div class="row mb-3" id="customerDiv" style="display:none;">
+                        <div class="col-lg-12">
+                            <div class="form-floating">                           
+                                <select class="form-select txtborder text-uppercase req-border" asp-for="InwardOutwardModel.CustId" required asp-items="Model.CustomerList" id="CustId">
+                                    <option value="">Select Customer Name</option>
+                                </select>
+                                <label asp-for="InwardOutwardModel.CustId">Customer Name</label>
+                                <span class="text-danger" asp-validation-for="InwardOutwardModel.CustId"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Outward (Supplier) Dropdown -->
+                    <div class="row mb-3" id="supplierDiv" style="display:none;">
+                        <div class="col-lg-12">
+                            <div class="form-floating">                            
+                                <select class="form-select txtborder text-uppercase req-border" asp-for="InwardOutwardModel.SupplierMasterId" required asp-items="Model.SupplierList" id="SupplierMasterId">
+                                    <option value="">Select Supplier Name</option>
+                                </select>
+                                <label asp-for="InwardOutwardModel.SupplierMasterId">Supplier Name</label>
+                                <span class="text-danger" asp-validation-for="InwardOutwardModel.SupplierMasterId"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Start Date -->
+                        <div class="col-lg-6 mb-3">
+                            <div class="form-floating">
+                                <input type="date" asp-for="InwardOutwardModel.Date" id="Date" class="form-control" required />
+                                <label>Date<span class="text-danger"> *</span></label>
+                            </div>
+                            <span class="text-danger border-danger" asp-validation-for="InwardOutwardModel.Date"></span>
+                        </div>
+
+                        <!-- Interval -->
+                        <div class="col-lg-6 mb-3">
+                            <div class="form-floating">
+                                <input asp-for="InwardOutwardModel.Note" autocomplete="off" class="form-control req-border">
+                                <label>Note</label>
+                            </div>
+                            <span class="text-danger border-danger" asp-validation-for="InwardOutwardModel.Note"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 mb-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="floatingSelect" asp-for="InwardOutwardModel.IsActive" aria-label="Floating label select example">
+                                    <option value="0">Select Status</option>
+                                    <option value="true" selected>Active</option>
+                                    <option value="false">In-Active</option>
+                                </select>
+                                <label> Select Status</label>
+                            </div>
+                            <span class="text-danger border-danger" asp-validation-for="InwardOutwardModel.IsActive"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer">
+                    @if (!Model.IsView)
+                    {
+                        <button type="button" class="btn pull-left btn-success mr-1" onclick="Warranty.InwardOutward.Save()"><i class="ri-save-line"></i> Save</button>
+                        <button type="button" class="btn pull-left btn-info mr-1" onclick="Warranty.InwardOutward.Save()"><i class="ri-save-line"></i> Save & Close</button>
+                    }
+                    <a asp-action="Index" asp-controller="InwardOutward" class="btn pull-left btn-danger custom-btn">
+                        <i class="ri-forbid-line"></i> Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header align-items-center d-flex" style="padding:0.7rem">
+                    <h4 class="card-title mb-0 flex-grow-1">Inward / Outward Item Details</h4>
+                    <div class="flex-shrink-0">
+                        <button type="button" id="addProductBtn" class="btn btn-secondary btn-sm la-pull-right" onclick="Warranty.InwardOutward.AddItem()" disabled>
+                            <i class="ri-add-line"></i> Add Inward / Outward Item
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="divInwardOutwardItemList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+    <script src="~/assets/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="~/js/jquery-validation/dist/jquery.validate.min.js"></script>
+
+    <script src="~/js/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/jquery-validation-unobtrusive/jquery.inputmask.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/jquery.inputmask.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.date.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.numeric.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.phone.extensions.js" asp-append-version="true"></script>
+
+    <script src="~/js/custom/Warranty.Common.js"></script>
+    <script src="~/js/custom/Warranty.InwardOutward.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            Warranty.InwardOutward.Init();
+            Warranty.InwardOutward.InwardOutwardItemList('@Model.InwardOutwardModel.InwardOutwardId');
+
+
+        @if (Model.IsEdit)
+        {
+            @Html.Raw("$('#addProductBtn').prop('disabled', false);")
+        }
+
+                // Other custom code
+                $("#txtSearch").on("keyup", function () {
+                    Warranty.InwardOutward.Search();
+                });
+
+            var searchId = $("#searchId").detach();
+            $(".txtSearchId").prepend(searchId);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // On page load, check the selected option and show the appropriate dropdown
+            toggleDropdowns();
+
+            // Event listener for select change
+            $('#floatingSelect').change(function () {
+                toggleDropdowns();
+            });
+
+            function toggleDropdowns() {
+                var selectedValue = $('#floatingSelect').val();
+
+                // If 'Inward' is selected (true)
+                if (selectedValue === "true") {
+                    $('#customerDiv').show();    // Show customer dropdown
+                    $('#supplierDiv').hide();    // Hide supplier dropdown
+                }
+                // If 'Outward' is selected (false)
+                else if (selectedValue === "false") {
+                    $('#customerDiv').hide();    // Hide customer dropdown
+                    $('#supplierDiv').show();    // Show supplier dropdown
+                }
+                // If 'Select Status' is chosen (default)
+                else {
+                    $('#customerDiv').hide();    // Hide both dropdowns
+                    $('#supplierDiv').hide();
+                }
+            }
+        });
+
+    </script>
+
+    <script src="~/assets/libs/cleave.js/cleave.min.js"></script>
+
+}
+

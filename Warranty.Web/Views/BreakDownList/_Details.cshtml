@@ -1,0 +1,363 @@
+﻿@model BreakDownListViewModel
+@using Warranty.Common.Utility
+
+@section cphPageHead {
+    <style>
+        @@media only screen and (min-width: 768px) {
+            .formwidth {
+                width: 75%;
+            }
+        }
+
+        <style >
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+        }
+
+        .form-select {
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+            display: inline-block;
+        }
+
+        .dropdown-container {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ced4da;
+            width: 100%;
+            z-index: 1;
+            max-height: 150px;
+            overflow-y: auto;
+            display: none; /* Hidden by default */
+        }
+
+        .dropdown-list {
+            padding: 0;
+            margin: 0;
+        }
+
+        .dropdown-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+            .dropdown-item:hover {
+                background-color: #f1f1f1;
+            }
+
+        .form-control {
+            margin-bottom: 10px;
+            border: 1px solid #ced4da;
+        }
+    </style>
+}
+
+<script src="~/assets/js/pages/password-addon.init.js"></script>
+
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title " id="myModalLabel">
+        <i class='fas fa-user font-20'></i> @(Model.IsEdit ? "Edit" : "Add New") Breakdown List
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+
+<form class="validation-wizard form-horizontal form-material needs-validation formwidth" id="BreakdownListForm">
+
+    <div class="modal-body">
+        <input asp-for="BreakdownDetModel.EncId" type="hidden" />
+        <input asp-for="BreakdownDetModel.CreatedBy" type="hidden" />
+        <input asp-for="BreakdownDetModel.CreatedDate" type="hidden" />
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12 mb-3">
+                <label asp-for="BreakdownDetModel.CustId">Doctor</label> <span class="text-danger"> *</span>
+                <div class="custom-dropdown">
+                    @if(Model.IsEdit){
+                    <div id="selectBox" class="form-select" onclick="toggleDropdown()">
+                        <span id="selectedValue">
+                                @Model.BreakdownDetModel.CustName
+                       </span>
+                    </div>
+
+                    <!-- Search input and dropdown items -->
+                    <div id="dropdownContainer" class="dropdown-container mt-2" style="display: none;">
+                        <input type="text" id="searchInput" placeholder="Search Doctor Name" class="form-control" onkeyup="filterFunction()" required />
+
+                        <div id="dropdownList" class="dropdown-list mt-2">
+                            @foreach (var item in Model.GetCustomerList)
+                            {
+                                <div class="dropdown-item mt-2" data-value="@item.Value" onclick="selectDoctor(this)">
+                                    @item.Text
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <input type="hidden" asp-for="BreakdownDetModel.EnggId" id="selectedEngineerId" value="@Model.BreakdownDetModel.CustId" required />
+
+                    }else{
+
+                        <!-- Custom dropdown structure -->
+                        <div class="custom-dropdown">
+                            <div id="selectBox" class="form-select" onclick="toggleDropdown()">
+                                <span id="selectedValue">Select Doctor Name</span>
+                            </div>
+
+                            <!-- Search input and dropdown items -->
+                            <div id="dropdownContainer" class="dropdown-container mt-2" style="display: none;">
+                                <input type="text" id="searchInput" placeholder="Search Doctor Name" class="form-control" onkeyup="filterFunction()" required />
+
+                                <div id="dropdownList" class="dropdown-list mt-2">
+                                    <div class="dropdown-item" data-value="">
+                                        Select Doctor Name
+                                    </div>
+                                    @foreach (var item in Model.GetCustomerList)
+                                    {
+                                        <div class="dropdown-item mt-2" data-value="@item.Value" onclick="selectDoctor(this)">
+                                            @item.Text
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <input type="hidden" asp-for="BreakdownDetModel.CustId" id="selectedDoctorId" required />
+                        </div>
+                        <span class="text-danger" asp-validation-for="BreakdownDetModel.CustId"></span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6 mb-3">
+                <label asp-for="BreakdownDetModel.CallRegDate">Call Reg Date</label> <span class="text-danger"> *</span>
+                <input type="date" asp-for="BreakdownDetModel.CallRegDate" autocomplete="off" class="form-control req-border text-uppercase datePicker" date-format="m/d/y" required>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.CallRegDate"></span>
+            </div>
+
+            <div class="col-xxl-6 mb-3">
+                <label asp-for="BreakdownDetModel.TypeId">Breakdown Type</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="BreakdownDetModel.TypeId" required asp-items="Model.GetBreakdownTypeList" id="TypeId" required>
+                    <option value="">Select BreakDown Type</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.TypeId"></span>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="BreakdownDetModel.EnggId">Engineer</label> <span class="text-danger"> *</span>
+                <div class="custom-dropdown">
+                    @if(Model.IsEdit){
+                    <div id="selectBoxEngineer" class="form-select" onclick="toggleDropdownEngineer()">
+                        <span id="selectedEngineerValue">
+                                @Model.BreakdownDetModel.EngineerName
+                        </span>
+                    </div>
+
+                    <div id="engineerDropdownContainer" class="dropdown-container mt-2" style="display: none;">
+                        <input type="text" id="engineerSearchInput" placeholder="Search Engineer Name" class="form-control" onkeyup="filterEngineerFunction()" required />
+
+                        <div id="engineerDropdownList" class="dropdown-list">
+                            @foreach (var item in Model.GetEngineerList)
+                            {
+                                <div class="dropdown-item mt-2" data-value="@item.Value" onclick="selectEngineer(this)">
+                                    @item.Text
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <input type="hidden" asp-for="BreakdownDetModel.EnggId" id="selectedEngineerId" value="@Model.BreakdownDetModel.EnggId" required />
+
+                    <input type="hidden" asp-for="BreakdownDetModel.EnggId" id="selectedEngineerId" required />
+                    }
+                    else{
+                    <!-- Custom dropdown structure -->
+                    <div class="custom-dropdown">
+                        <div id="selectBoxEngineer" class="form-select" onclick="toggleDropdownEngineer()">
+                            <span id="selectedEngineerValue">Select Engineer</span>
+                        </div>
+
+                        <div id="engineerDropdownContainer" class="dropdown-container mt-2" style="display: none;">
+                            <input type="text" id="engineerSearchInput" placeholder="Search Engineer Name" class="form-control" onkeyup="filterEngineerFunction()" required />
+
+                            <div id="engineerDropdownList" class="dropdown-list">
+                                <div class="dropdown-item" data-value="">
+                                    Select Engineer
+                                </div>
+                                @foreach (var item in Model.GetEngineerList)
+                                {
+                                    <div class="dropdown-item mt-2" data-value="@item.Value" onclick="selectEngineer(this)">
+                                        @item.Text
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <input type="hidden" asp-for="BreakdownDetModel.EnggId" id="selectedEngineerId" required />
+                    </div>
+                    <span class="text-danger" asp-validation-for="BreakdownDetModel.EnggId"></span>
+
+                    }
+                </div>
+            </div>
+
+            <div class="col-xxl-6">
+                <label asp-for="BreakdownDetModel.EnggFirstVisitDate">Engineer First Visit Date</label> <span class="text-danger"> *</span>
+                <input type="date" asp-for="BreakdownDetModel.EnggFirstVisitDate" autocomplete="off" class="form-control req-border text-uppercase datePicker" date-format="m/d/y" required>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.EnggFirstVisitDate"></span>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-lg-12">
+                <label asp-for="BreakdownDetModel.CrmNo">CRM No</label> <span class="text-danger"> *</span>
+                <input type="number" asp-for="BreakdownDetModel.CrmNo" autocomplete="off" class="form-control req-border text-uppercase" required>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.CrmNo"></span>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12">
+                <label asp-for="BreakdownDetModel.Problems">Analysis or Problem Identified</label><span class="text-danger"> *</span>
+                <textarea class="form-control" asp-for="BreakdownDetModel.Problems" rows="3" required></textarea>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.Problems"></span>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="BreakdownDetModel.ReqAction">Required Action</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="BreakdownDetModel.ReqAction" asp-items="Model.GetActionMastList" required id="ActionId">
+                    <option value="">Select Required Action</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.ReqAction"></span>
+            </div>
+
+            <div class="col-xxl-6">
+                <label asp-for="BreakdownDetModel.ActionTaken">Take Action</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="BreakdownDetModel.ActionTaken" asp-items="Model.GetActionMastList" required id="ActionId">
+                    <option value="">Select Take Action</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.ActionTaken"></span>
+            </div>
+        </div>
+
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="BreakdownDetModel.Conclusion">Conclusion</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="BreakdownDetModel.Conclusion" required id="ConclusionId">
+                    <option value="">Select Conclusion</option>
+                    <option value="@((int)Enumeration.Conclusion.Continue)">Continue</option>
+                    <option value="@((int)Enumeration.Conclusion.Close)">Close</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.Conclusion"></span>
+            </div>
+
+            <div class="col-xxl-6">
+                <label for="status-field" class="form-label">Status(Active/In-Active)</label><span class="text-danger"> *</span>
+                <select class="form-select" aria-label="IsActive" id="txtIsActive" asp-for="BreakdownDetModel.IsActive" required>
+                    <option selected>Select Status</option>
+                    <option value="true" selected>Active</option>
+                    <option value="false">In-Active</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.IsActive"></span>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+            <button type="button" class="btn btn-success " onclick="Warranty.BreakdownList.Save()"><i class="ri-save-line"></i> Submit</button>
+        </div>
+    </div>
+
+</form>
+<script>
+    // Toggle dropdown visibility when clicking the select box for doctors
+    function toggleDropdown() {
+        const dropdownContainer = document.getElementById('dropdownContainer');
+        dropdownContainer.style.display = dropdownContainer.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Filter dropdown items based on search input for doctors
+    function filterFunction() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const dropdownItems = document.getElementsByClassName('dropdown-item');
+
+        // Loop through dropdown items and filter them
+        for (let i = 0; i < dropdownItems.length; i++) {
+            const itemText = dropdownItems[i].textContent.toLowerCase();
+            dropdownItems[i].style.display = itemText.indexOf(filter) > -1 ? '' : 'none';
+        }
+    }
+
+    // Function to handle doctor selection
+    function selectDoctor(element) {
+        const selectedValue = element.getAttribute('data-value');
+        const selectedText = element.textContent;
+
+        // Set the selected value in the hidden input and update the display
+        document.getElementById('selectedValue').textContent = selectedText;
+        document.getElementById('selectedDoctorId').value = selectedValue;
+
+        // Hide the dropdown after selection
+        document.getElementById('dropdownContainer').style.display = 'none';
+    }
+
+    // Toggle dropdown visibility when clicking the select box for engineers
+    function toggleDropdownEngineer() {
+        const dropdownContainer = document.getElementById('engineerDropdownContainer');
+        dropdownContainer.style.display = dropdownContainer.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Filter dropdown items based on search input for engineers
+    function filterEngineerFunction() {
+        const input = document.getElementById('engineerSearchInput');
+        const filter = input.value.toLowerCase();
+        const dropdownList = document.getElementById('engineerDropdownList');
+        const items = dropdownList.getElementsByClassName('dropdown-item');
+
+        // Loop through dropdown items and filter them
+        for (let i = 0; i < items.length; i++) {
+            const itemText = items[i].textContent.toLowerCase();
+            items[i].style.display = itemText.indexOf(filter) > -1 ? '' : 'none';
+        }
+    }
+
+    // Function to handle engineer selection
+    function selectEngineer(element) {
+        const selectedValue = element.getAttribute('data-value');
+        const selectedText = element.textContent;
+
+        // Update display and hidden input
+        document.getElementById('selectedEngineerValue').textContent = selectedText;
+        document.getElementById('selectedEngineerId').value = selectedValue;
+
+        // Hide dropdown after selection
+        document.getElementById('engineerDropdownContainer').style.display = 'none';
+    }
+
+    // Hide the dropdowns if the user clicks outside of them
+    window.onclick = function (event) {
+        if (!event.target.matches('.form-select') && !event.target.matches('.dropdown-item') && !event.target.matches('#searchInput') && !event.target.matches('#engineerSearchInput')) {
+            const doctorDropdown = document.getElementById('dropdownContainer');
+            const engineerDropdown = document.getElementById('engineerDropdownContainer');
+            if (doctorDropdown.style.display === 'block') {
+                doctorDropdown.style.display = 'none';
+            }
+            if (engineerDropdown.style.display === 'block') {
+                engineerDropdown.style.display = 'none';
+            }
+        }
+    };
+</script>
+
+
+

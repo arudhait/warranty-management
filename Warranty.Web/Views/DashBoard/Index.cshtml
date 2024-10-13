@@ -1,0 +1,514 @@
+﻿@using Warranty.Common.Utility;
+@model Warranty.Web.Models.DashBoardViewModel
+
+@{
+    ViewBag.Title = "Dashboard";
+    ViewBag.pTitle = "Dashboard";
+    ViewBag.pageTitle = "Dashboards";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .flatpickr-input[readonly] {
+        cursor: pointer;
+        background-color: var(--vz-input-bg-custom);
+        border: 1px solid #f2f2f2;
+        height: 2rem;
+        text-align: center;
+    }
+
+    label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        padding-top: 4px;
+    }
+
+    table.dataTable > thead .sorting:before, table.dataTable > thead .sorting_asc:before, table.dataTable > thead .sorting_asc_disabled:before, table.dataTable > thead .sorting_desc:before, table.dataTable > thead .sorting_desc_disabled:before {
+        content: "\f0360";
+        position: absolute;
+        right: 0.5rem;
+        top: 6px;
+        font-size: .8rem;
+        font-family: "Material Design Icons";
+    }
+
+    table.dataTable > thead .sorting:after, table.dataTable > thead .sorting_asc:after, table.dataTable > thead .sorting_asc_disabled:after, table.dataTable > thead .sorting_desc:after, table.dataTable > thead .sorting_desc_disabled:after {
+        content: "\f035d";
+        position: absolute;
+        right: 0.5rem;
+        top: 11px;
+        font-size: .8rem;
+        font-family: "Material Design Icons";
+    }
+
+    .card-animate {
+        border-radius: 15px !important;
+    }
+
+    .fw-medium {
+        font-weight: 645 !important;
+    }
+
+    .text-black {
+        font-weight: 600;
+    }
+
+    @@media (min-width: 1660px) {
+        .text-md-left {
+            text-align: left !important; /* Left-align the text on medium and larger screens */
+        }
+    }
+}
+
+</style>
+
+@section styles{
+    <!--datatable css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!-- jsvectormap css -->
+    <link href="~/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+
+    <!--Swiper slider css-->
+    <link href="~/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/datatablecustom.css" rel="stylesheet" />
+
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+}
+
+<div class="row">
+    <div class="col">
+        <div class="h-100">
+            <div class="row mb-3 pb-1">
+                <div class="col-12">
+                    <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+                        <div class="flex-grow-1">
+                            <h4 class="fs-16 mb-1">
+                                Hi,
+
+                            </h4>
+                            <p class="text-muted mb-0">Here's what's happening with your store today.</p>
+                        </div>
+                        <div class="mt-3 mt-lg-0">
+                            <form action="javascript:void(0);">
+                                <div class="row g-3 mb-0 align-items-center">
+                                    <div class="col-sm-auto">
+                                        <div class="input-group">
+                                            <label for="dateRange">Date Range:</label>&nbsp;&nbsp;
+                                            <div class="date-input-container">
+                                                <input type="text" id="dateRange" name="dateRange" readonly="readonly" placeholder="Select Date Range">
+                                                <span class="calendar-icon"><i class="fas fa-calendar-alt"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <!--end row-->
+                            </form>
+                        </div>
+                    </div><!-- end card header -->
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
+
+            <div class="row">
+                @if (Model.RoleId == (int)Enumeration.Role.SuperAdmin || Model.RoleId == (int)Enumeration.Role.ServiceEngineer)
+                {
+                    <div class="col-xl-3 col-md-6">
+                        <!-- card -->
+                        <div class="card card-animate" style="background: linear-gradient(135deg, #a97e99, #F9CBAA);">
+
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <p class="text-uppercase fw-medium text-truncate mb-0">
+                                            Engineer
+                                        </p>
+                                    </div>
+
+                                </div>
+                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                    <div>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                            <span id="leadCountSpan">@Model.TotalEnggCount</span>
+                                        </h4>
+                                        @if (Model.RoleId == (int)Enumeration.Role.SuperAdmin)
+                                        {
+                                            <a href="@Url.Action("Index", "Engineer")" class="text-decoration-underline" style="color: rgb(0 0 0);">View all Engineer</a>
+                                        }
+                                        else
+                                        {
+                                            <a  class="text-decoration-underline" style="color: rgb(0 0 0);">Engineer Data</a>
+                                        }
+
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                            <i class="bx bx-dollar-circle text-primary"></i>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div><!-- end card body -->
+                        </div><!-- end card -->
+                    </div>
+
+                    <!-- end col -->
+                }
+
+                @if (Model.RoleId == (int)Enumeration.Role.SuperAdmin)
+                {
+                    <div class="col-xl-3 col-md-6">
+                        <!-- card -->
+                        <div class="card card-animate" style="background: linear-gradient(135deg, #7ab6c1, #c99ec9);">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <p class="text-uppercase fw-medium text-truncate mb-0">
+                                            Cutomer
+                                        </p>
+                                    </div>
+
+                                </div>
+                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                    <div>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                            <span id="leadCountSpan">@Model.TotalCustCount</span>
+                                        </h4>
+                                        <a href="@Url.Action("Index", "Customer")" class="text-decoration-underline" style="color: rgb(0 0 0);">View all Cutomer</a>
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                            <i class="bx bx-shopping-bag text-primary"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div><!-- end card body -->
+                        </div><!-- end card -->
+                    </div>
+
+                    <!-- end col -->
+                }
+
+
+                @if (Model.RoleId == (int)Enumeration.Role.SuperAdmin || Model.RoleId == (int)Enumeration.Role.ServiceEngineer)
+                {
+                    <div class="col-xl-3 col-md-6">
+                        <!-- card -->
+                        <div class="col-12 mx-auto">
+                            <!-- Main Card -->
+                            <div class="card card-animate" style="border-radius: 15px; background-color: #fff; width: 100%; max-width: 1400px; height: 150px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                                <div class="card-body p-2 d-flex flex-column justify-content-center" style="height: 100%;">
+                                    <!-- First Section: Messages -->
+                                    <div class="d-flex justify-content-between align-items-center mb-1 p-2" style="background: linear-gradient(135deg, #F093FB, #e16374); border-radius: 10px; height: 70px;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="~/assets/images/time.png" alt="User 1" class="img-fluid rounded-circle" style="width: 42px; height: 45px;">
+                                            @*  </span>
+                                        </div>*@
+                                            <p class="mb-0 text-black">
+                                                <a href="@Url.Action("Index", "Due_ExpiredWarranty")" class="text-black text-decoration-none">Due Warranty</a>
+                                            </p>
+                                        </div>
+                                        <div class="text-black">
+                                            <span id="leadCountSpan">@Model.TotalDueCount</span>
+                                        </div>
+                                    </div>
+                                    <!-- Second Section: Emails -->
+                                    <div class="d-flex justify-content-between align-items-center p-2" style="background: linear-gradient(135deg, #6E85FF, #71E1FF); border-radius: 10px; height: 70px;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="~/assets/images/WExpired.png" alt="User 1" class="img-fluid rounded-circle" style="width: 43px; height: 41px;">
+                                            @* </span>
+                                        </div>*@
+                                            <p class="mb-0 text-black">
+                                                <a href="@Url.Action("Index", "Due_ExpiredWarranty")" class="text-black text-decoration-none">Expired Warranty</a>
+                                            </p>
+                                        </div>
+                                        <div class="text-black">
+                                            <span id="leadCountSpan">@Model.TotalExpiredCount</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- end col -->
+                }
+
+                @if (Model.RoleId == (int)Enumeration.Role.SuperAdmin || Model.RoleId == (int)Enumeration.Role.ServiceEngineer)
+                {
+                    <div class="col-xl-3 col-md-6">
+                        <!-- card -->
+                        <div class="col-12 mx-auto">
+                            <!-- Main Card -->
+                            <div class="card card-animate" style="border-radius: 15px; background-color: #fff; width: 100%; max-width: 1400px; height: 150px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                                <div class="card-body p-2 d-flex flex-column justify-content-center" style="height: 100%;">
+                                    <!-- First Section: Messages -->
+                                    <div class="d-flex justify-content-between align-items-center mb-1 p-2" style="background: linear-gradient(135deg, #58ccf1, #0e8585); border-radius: 10px; height: 70px;">
+                                        <div class="d-flex align-items-center">
+                                           <img src="~/assets/images/Contract1.png" alt="User 1" class="img-fluid" style="width: 35px; height: 33px;">
+                                            @* </span>
+                                        </div>*@
+                                            <p class="mb-0 text-black">
+                                                <a href="@Url.Action("Index", "Due_ExpiredAMC_CMCContract")" class="text-black text-decoration-none">Due AMC/CMC Contract</a>
+                                            </p>
+                                        </div>
+                                        <div class="text-black">
+                                            <span id="leadCountSpan">@Model.ContractTotalDueCount</span>
+                                        </div>
+                                    </div>
+                                    <!-- Second Section: Emails -->
+                                    <div class="d-flex justify-content-between align-items-center p-2" style="background: linear-gradient(135deg, #7451ab, #d38bdd); border-radius: 10px; height: 70px;">
+                                        <div class="d-flex align-items-center">
+                                            <img src="~/assets/images/Expired.png" alt="User 1" class="img-fluid rounded-circle" style="width: 36px; height: 35px;">
+                                            @*  </span>
+                                        </div>*@
+                                            <p class="mb-0 text-black">
+                                                <a href="@Url.Action("Index", "Due_ExpiredAMC_CMCContract")" style="margin-left: 5px;" class="text-black text-decoration-none">Expired AMC/CMC Contract</a>
+                                            </p>
+                                        </div>
+                                        <div class="text-black">
+                                            <span id="leadCountSpan">@Model.ContractTotalExpiredCount</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- end col -->
+                }
+            </div> <!-- end row-->
+            @if (Model.RoleId == (int)Enumeration.Role.SuperAdmin || Model.RoleId == (int)Enumeration.Role.ServiceEngineer)
+            {
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div id="divCustomerList"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <canvas id="myChart" width="400" height="200"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <canvas id="ContractChart" width="400" height="200"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (Model.RoleId == (int)Enumeration.Role.SuperAdmin || Model.RoleId == (int)Enumeration.Role.ServiceEngineer)
+            {
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="col-lg-12">
+                                    <div id="divDueWarratyList"></div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div id="divExpiredWarratyList"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="col-lg-12">
+                                    <div id="divDueAMCCMSWarratyList"></div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div id="divExpiredAMCCMSWarratyList"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (Model.RoleId == (int)Enumeration.Role.ServiceEngineer)
+            {
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col-lg-12">
+                                    <div id="divSEStateDistrictList"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div> <!-- end row-->
+
+    </div> <!-- end .h-100-->
+
+</div> <!-- end col -->
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!--datatable js-->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+
+    <script src="~/js/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/js/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="~/js/jquery-validation-unobtrusive/jquery.inputmask.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/jquery.inputmask.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.date.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.numeric.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.phone.extensions.js" asp-append-version="true"></script>
+
+
+    <script src="~/js/custom/Warranty.Dashboard.js"></script>
+    <script src="~/js/custom/Warranty.Common.js"></script>
+    <script src="~/js/custom/Warranty.Allocation.js"></script>
+
+
+
+    <script>
+        $(document).ready(function () {
+            Warranty.Dashboard.CustomerList();
+            Warranty.Dashboard.DueWarratyList();
+            Warranty.Dashboard.ExpriredWarratyList();
+            Warranty.Dashboard.DueAMCCMCWarratyList();
+            Warranty.Dashboard.ExpriredAMCCMCWarratyList();
+            Warranty.Dashboard.SEwiseStateDistrictList();
+
+        });
+    </script>
+
+
+    <script>
+
+        flatpickr("#dateRange", {
+            mode: "range",
+            dateFormat: "Y-m-d",
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+
+        const totalDueCount = @Model.TotalDueCount;
+        const totalExpiredCount = @Model.TotalExpiredCount;
+
+        const myChart = new Chart(ctx, {
+            type: 'doughnut', // Change to 'pie' if you prefer
+            data: {
+                labels: ['Due', 'Expired'],
+                datasets: [{
+                    label: 'Counts',
+                    data: [totalDueCount, totalExpiredCount], // Data points
+                    backgroundColor: [
+                        'rgba(255, 153, 153, 0.6)', // Darker peach for Due
+                        'rgba(153, 102, 204, 0.6)'  // Darker violet for Expired
+                    ],
+                    borderColor: [
+                        'rgba(255, 153, 153, 1)',    // Darker peach
+                        'rgba(153, 102, 204, 1)'     // Darker violet
+                    ],
+
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Total Due Warranty & Expired Warranty Counts'
+                    }
+                }
+            }
+        });
+
+        const contract = document.getElementById('ContractChart').getContext('2d');
+        const totalContarctDueCount = @Model.ContractTotalDueCount ?? 0;
+        const totalContractExpiredCount = @Model.ContractTotalExpiredCount ?? 0;
+
+        const myContractChart = new Chart(contract, {
+            type: 'doughnut',
+            data: {
+                labels: ['Expired', 'Due'],
+                datasets: [{
+                    label: 'Counts',
+                    data: [totalContractExpiredCount, totalContarctDueCount],
+                    backgroundColor: [
+                        'rgba(255, 16, 38, 0.6)',
+                        'rgba(40, 67, 135, 1)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 16, 38, 0.6)',
+                        'rgba(40, 67, 135, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Total Contract Due AMC/CMC & Expired AMC/CMC Counts'
+                    }
+                }
+            }
+        });
+    </script>
+
+    <script src="~/assets/libs/cleave.js/cleave.min.js"></script>
+
+}

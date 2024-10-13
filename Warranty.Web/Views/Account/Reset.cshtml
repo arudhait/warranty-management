@@ -1,0 +1,143 @@
+﻿@model Warranty.Common.BussinessEntities.ResetPasswordModel
+@{
+
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<style>
+    .auth-bg-cover {
+        background: linear-gradient(327deg, #25394a 20%, #ffffff);
+    }
+
+    .pt-5 {
+        padding-top: 0rem !important;
+    }
+
+    .h-100 {
+        height: 105% !important;
+    }
+
+    .form-control {
+        background-color: White !important;
+    }
+</style>
+
+<div class="auth-page-wrapper auth-bg-cover py-5 d-flex justify-content-center align-items-center min-vh-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-center mt-sm-5 mb-4 text-white-50">
+                    <div>
+                        <a href="@Url.Action("Index", "Dashboard")" class="d-inline-block auth-logo">
+                            <img src="~/assets/images/Warranty1.png" height="60" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card mt-4">
+                    <div class="card-body p-4" style="background-color: white;">
+                        <div class="text-center mt-sm-5 mb-4 text-white-50">
+                            <div style="margin-top: -2rem;">
+                                <a href="@Url.Action("Index", "Account")" class="d-inline-block auth-logo">
+                                  
+                                </a>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <h5 class="text-primary">Create new password</h5>
+                            <p class="text-muted">Your new password must be different from previous used password.</p>
+                        </div>
+                        <div class="p-2">
+                            <form class="needs-validation" asp-asp-controller="Account" asp-action="Reset" id="ResetPassword" onsubmit="return encryptPwdWithoutUsername()" novalidate>
+                                <input type="hidden" asp-for="EncId" />
+                                <input type="hidden" asp-for="Username" />
+                                <div class="input-group">
+                                    <div class="mb-3 text-start">
+                                        <label class="form-label" for="email" style="color: black;">Email: </label>
+                                        <span style="color:red; font-size:15px; font-weight:bold;">@Model.Username</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="validationCustomUsername" style="color: black;">New Password</label>
+                                    <div class="input-group auth-pass-inputgroup">
+                                        <span class="input-group-text password-addon" id="password-addon" style="cursor:pointer;"><i class="ri-eye-line align-middle toggle-password"></i></span>
+                                        <input type="password" style="color: black;" id="passwordTextnew" asp-for="Password" class="form-control form-floating pe-5 password-input" placeholder="Enter password" id="validationCustomUsername" tabindex="2" required>
+                                        <div class="invalid-feedback">
+                                            <span asp-validation-for="Password"></span>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="validationCustomUsername" style="color: black;">Confirm Password</label>
+                                    <div class="input-group auth-pass-inputgroup">
+                                        <span class="input-group-text password-addon" id="password-addon" style="cursor:pointer;"><i class="ri-eye-line align-middle toggle-password"></i></span>
+                                        <input type="Password" style="color: black;" id="passwordTextConfirm" asp-for="ConfirmPassword" class="form-control form-floating pe-5 password-input" placeholder="Enter ConfirmPassword" id="validationCustomUsername" tabindex="3" required>
+                                        <div class="invalid-feedback">
+                                            <span asp-validation-for="ConfirmPassword"></span>
+                                        </div>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="CaptchaCode" class="form-label" style="color: black;">Captcha</label>
+                                    <div class="col-md-7" id="txtcaptchImg">
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="basic-addon1"><i class="ri-pencil-line"></i></span>
+                                            <input type="text" style="color: black;" id="captcha" class="form-control form-floating" asp-for="CaptchaCode" placeholder="Captcha"
+                                                   aria-label="Captcha" aria-describedby="basic-addon1" tabindex="3" onkeypress="return isNumber(event)" onpaste="return false;" autocomplete="off" required>
+                                            <div class="invalid-feedback">
+                                                <span asp-validation-for="CaptchaCode"></span>
+                                            </div>
+                                            <div class="valid-feedback" id="validcaptcha">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5" id="txtcaptchImg1">
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="basic-addon1" style="cursor:pointer;" href="javascript:SKYMAC.Common.RefreshCaptcha()"><i class="ri-refresh-line"></i></span>
+                                            <img src="@Model.CaptchaImage" alt="" class="imgCaptcha" height="39" width="99" style="border: solid 1px #ced4da; border-top-right-radius: 0.25rem; border-bottom-right-radius: 0.25rem; margin-left: 44px;margin-top: -39px" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button class="btn  btn-primary  w-100" type="submit" id="resetSubmitbtn">Reset Password</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+                <div class="mt-4 text-center">
+                    <p class="mb-0">Wait, I remember my password... <a href="@Url.Action("Index", "Account")" class="fw-semibold text-primary text-decoration-underline"> Click here </a> </p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="mt-3">
+                    @if (Model.Message != null)
+                    {
+                        <div id="divMsg" class="alert alert-danger alert-border-left alert-dismissible fade show" role="alert">
+                            <i class="ri-error-warning-line me-3 align-middle"></i> <span id="lblError">@Model.Message</span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>

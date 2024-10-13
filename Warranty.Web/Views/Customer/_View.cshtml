@@ -1,0 +1,110 @@
+﻿@model Warranty.Web.Models.CustMastViewModel
+
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="myModalLabel">
+        <i class='fas fa-user font-20'></i> Details - Customer
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+
+<form class="validation-wizard form-horizontal form-material needs-validation" id="CustomerView">
+    <div class="modal-body">
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="CustMastModel.DoctorName">Doctor Name</label> <span class="text-danger"> *</span>
+                <input asp-for="CustMastModel.DoctorName" class="form-control req-border" disabled>
+            </div>
+            <div class="col-xxl-6">
+                <label asp-for="CustMastModel.HospitalName">Hospital Name</label> <span class="text-danger"> *</span>
+                <input asp-for="CustMastModel.HospitalName" class="form-control req-border" disabled>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12">
+                <label asp-for="CustMastModel.PostalAddress">Postal Address</label> <span class="text-danger"> *</span>
+                <textarea class="form-control" asp-for="CustMastModel.PostalAddress" rows="3" disabled></textarea>
+                <span class="text-danger" asp-validation-for="CustMastModel.PostalAddress"></span>
+                <div class="invalid-feedback">
+                    Enter The Postal Address.
+                </div>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12">
+                <label asp-for="CustMastModel.Designation">Designation</label>
+                <input asp-for="CustMastModel.Designation" class="form-control req-border" disabled>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label class="form-label">Mobile Number</label><span class="text-danger"> *</span>
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1"><i class="ri-phone-line"></i></span>
+                    <input type="text" class="form-control form-floating phone-inputmask" asp-for="CustMastModel.MobileNo" autocomplete="off" placeholder="(xxx) xxx-xxxx" disabled>
+                </div>
+                <span class="text-danger" asp-validation-for="CustMastModel.MobileNo"></span>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="CustMastModel.MobileNo"></span>
+                </div>
+            </div>
+            <div class="col-xxl-6">
+                <label class="form-label">Phone Number</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1"><i class="ri-phone-line"></i></span>
+                    <input type="text" class="form-control form-floating phone-inputmask" asp-for="CustMastModel.PhoneNo" autocomplete="off" placeholder="(xxx) xxx-xxxx" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="CustMastModel.Email">Email Id</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1"><i class="ri-user-3-line"></i></span>
+                    <input asp-for="CustMastModel.Email" autocomplete="off" class="form-control form-floating req-border" disabled>
+                </div>
+            </div>
+            <div class="col-xxl-6">
+                <label asp-for="CustMastModel.Pincode">Pincode</label> <span class="text-danger"> *</span>
+                <div class="input-group">
+                    <input class="form-control zipcode-inputmask req-border" type="text" autocomplete="off" asp-for="CustMastModel.Pincode" id="Pincode" disabled />
+                </div>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-4">
+                <label asp-for="CustMastModel.StateId">State</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="CustMastModel.StateId" required asp-items="Model.StateList" id="StateId" disabled>
+                    <option value="">Select State</option>
+                </select>
+            </div>
+            <div class="col-xxl-4">
+                <label asp-for="CustMastModel.DistrictId">District</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="CustMastModel.DistrictId" required asp-items="Model.DistrictList" id="DistrictId" disabled>
+                    <option value="">Select District</option>
+                </select>
+            </div>
+            <div class="col-xxl-4">
+                <label asp-for="CustMastModel.City"></label>
+                <input asp-for="CustMastModel.City" autocomplete="off" class="form-control req-border" disabled>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="CustMastModel.PndtCertiNo">PNDT Certificate Number</label> <span class="text-danger"> *</span>
+                <input asp-for="CustMastModel.PndtCertiNo" class="form-control req-border" disabled>
+            </div>
+            <div class="col-xxl-6">
+                <label asp-for="CustMastModel.RegDate"> Date</label>
+                <input type="date" asp-for="CustMastModel.RegDate" class="form-control req-border" disabled>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12">
+                <label for="status-field" class="form-label">Status(Active/In-Active)</label>
+                <input type="text" class="form-control form-floating" value="@(Model.CustMastModel.IsActive?"IsActive":"InActive")" id="txtIsActive" asp-for="CustMastModel.IsActive" disabled>
+            </div>
+        </div>
+    </div>
+</form>
+

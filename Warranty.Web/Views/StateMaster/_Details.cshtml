@@ -1,0 +1,42 @@
+﻿@model Warranty.Web.Models.StateMastViewModel
+
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="myModalLabel">
+        <i class='las la-box font-20'></i> @(Model.IsEdit ? "Edit" : "Add New") State
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+
+
+<form class="validation-wizard form-horizontal form-material needs-validation" id="StateDetailForm">
+    <div class="modal-body">
+        <input asp-for="StateMastModel.EncId" type="hidden" />
+        <input asp-for="StateMastModel.CreatedDate" type="hidden" />
+        <input asp-for="StateMastModel.CreatedBy" type="hidden" />
+
+        <div class="mb-3">
+            <label asp-for="StateMastModel.StateName">State Name</label> <span class="text-danger"> *</span>
+            <input autocomplete="off" asp-for="StateMastModel.StateName" autocomplete="off" class="form-control req-border text-uppercase" required>
+            <span class="text-danger" asp-validation-for="StateMastModel.StateName"></span>
+            <div class="invalid-feedback">
+                <span asp-validation-for="StateMastModel.StateName"></span>
+            </div>
+        </div>
+        <div class="col-xxl-12">
+            <label for="status-field" class="form-label">Status(Active/In-Active)</label> <span class="text-danger"> *</span>
+            <select class="form-select" aria-label="IsActive" id="txtIsActive" asp-for="StateMastModel.IsActive" required>
+                <option selected>Select Status</option>
+                <option value="true" selected>Active</option>
+                <option value="false">In-Active</option>
+            </select>
+            <div class="invalid-feedback">
+                <span asp-validation-for="StateMastModel.IsActive"></span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+        <button type="button" class="btn btn-success " onclick="Warranty.StateMast.Save()"><i class="ri-save-line"></i> Submit</button>
+    </div>
+</form>

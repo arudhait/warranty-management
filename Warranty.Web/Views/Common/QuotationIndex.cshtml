@@ -1,0 +1,214 @@
+﻿@{
+    ViewBag.Title = "Declaration List";
+    ViewBag.pTitle = "Declaration List";
+    ViewBag.pageTitle = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+
+    <style>
+        tr td, th {
+            padding: .35rem .6rem !important;
+        }
+
+        .actionwidth {
+            min-width: 55px !important;
+            max-width: 55px !important;
+        }
+
+        .createdwidth {
+            min-width: 120px !important;
+            max-width: 120px !important;
+        }
+
+        .iconColorpadding {
+            padding: 3px;
+            font-size: 13px;
+            border-radius: 50%;
+        }
+
+        .form-floating > .form-control:not(:placeholder-shown) ~ label::after {
+            content: none !important;
+        }
+
+        #DeclarationList {
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            border: 1px solid #ddd; /* For border around the form */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional for a subtle shadow */
+        }
+
+        h4.card-title {
+            text-align: center; /* Center the form title */
+        }
+
+        .col-lg-8 {
+            max-width: 800px; /* Adjust width as needed */
+        }
+
+        .form-control {
+            border: 1px solid #ccc; /* Adds border to input fields */
+        }
+
+        .card-header, .card-body {
+            border-bottom: 1px solid #ccc; /* Adds borders inside the form */
+        }
+
+    </style>
+    <link href="~/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0"><i class="bx bx-comment-dots">&nbsp;</i>@ViewBag.pTitle</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><i class="mdi mdi-form-select">&nbsp;</i><a href="@Url.Action("Index", "Dashboard")">@ViewBag.pageTitle</a></li>
+                    <li class="breadcrumb-item"><i class="bx bx-comment-dots">&nbsp;</i><a href="javascript: void(0);">@ViewBag.pTitle</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<form class="validation-wizard form-horizontal form-material needs-validation" id="DeclarationList">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border rounded p-3" style="border-width: 2px;">
+                <div class="card-header align-items-center d-flex justify-content-center">
+                    <h4 class="card-title mb-0 flex-grow-1">Declaration List</h4>
+                </div>
+                <div class="card-body">
+                    <div id="partialContainer">
+                        <div class="row g-3">
+                            <div class="col-lg-6 mb-3">
+                                <label for="crmNo">CRM No<span class="text-danger"> *</span></label>
+                                <input type="text" class="form-control" id="crmNo" name="crmNo" placeholder="Enter CRM No" required oninput="checkInputs()">
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <label for="sparePN">Spare Part Number<span class="text-danger"> *</span></label>
+                                <input type="text" class="form-control" id="sparePN" name="sparePN" placeholder="Enter Spare Part Number" required oninput="checkInputs()">
+                            </div>
+                            <div class="col-lg-12 mb-3">
+                                <label for="name">Name<span class="text-danger"> *</span></label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" required oninput="checkInputs()">
+                            </div>
+                            <div class="col-lg-4 mb-3">
+                                <label for="partSN">Part Serial Number<span class="text-danger"> *</span></label>
+                                <input type="text" class="form-control" id="partSN" name="partSN" placeholder="Enter Part Serial Number" required oninput="checkInputs()">
+                            </div>
+                            <div class="col-lg-4 mb-3">
+                                <label for="machineSN">Machine Serial Number<span class="text-danger"> *</span></label>
+                                <input type="text" class="form-control" id="machineSN" name="machineSN" placeholder="Enter Machine Serial Number" required oninput="checkInputs()">
+                            </div>
+                            <div class="col-lg-4 mb-3">
+                                <label for="signedBy">Signed By<span class="text-danger"> *</span></label>
+                                <input type="text" class="form-control" id="signedBy" name="signedBy" placeholder="Enter Signer's Name" required oninput="checkInputs()">
+                            </div>
+                        </div>
+                        <!-- Hidden input to store the date -->
+                        <input type="hidden" id="date" name="date" value="@DateTime.Now.ToString("dd/MM/yyyy")">
+                        <div class="text-center mt-4">
+                            <button type="button" class="btn btn-success" onclick="Warranty.Declaration.DownloadDocument()" id="downloadButton" disabled>
+                                <i class="ri-save-line"></i> Download PDF
+                            </button>
+                        </div>
+                    </div>
+                    <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+@section Scripts {
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+
+    <script src="~/js/Declaration.js" asp-append-version="true"></script>
+    <script src="~/js/custom/Warranty.Declaration.js"></script>
+
+
+    <script type="text/javascript">
+       
+        function loadQuotationPartial() {
+            $.ajax({
+                url: "@Url.Action("_Quotation", "Common")", 
+                type: "GET",
+                success: function (data) {
+                    $('#partialContainer').html(data); 
+                },
+                error: function (xhr, status, error) {
+                    alert("An error occurred while loading the quotation: " + error);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $('#downloadButton').click(function () {
+               
+                var requestData = {
+                    CRMNo: $('#crmNo').val(),
+                    SparePN: $('#sparePN').val(),
+                    Name: $('#name').val(),
+                    PartSN: $('#partSN').val(),
+                    MachineSN: $('#machineSN').val(),
+                    SignedBy: $('#signedBy').val(),
+                    Date: $('#date').val()
+
+                };
+
+                
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("_Quotation", "Common")",
+                    data: requestData,
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function (result) {
+                        
+                        var blob = new Blob([result], { type: 'application/pdf' });
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = "Declaration.pdf"; 
+                        link.click();
+                        console.log(result);
+                    },
+                    error: function (xhr, status, error) {
+                        
+                        $('#errorMessage').text("An error occurred: " + error).show();
+                    }
+                });
+            });
+        });
+    </script>
+    @* ******************** Download button enables only when user imputs the data ******************** *@
+    <script>
+        function checkInputs() {
+           
+            const inputs = document.querySelectorAll('#pdfForm .form-control');
+            
+            const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+          
+            document.getElementById('downloadButton').disabled = !allFilled;
+        }
+    </script>
+}

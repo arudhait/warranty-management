@@ -1,0 +1,86 @@
+﻿@model List<Warranty.Common.BussinessEntities.MenuModel>
+<style>
+    .logo-lg {
+        margin-left: -30px;
+    }
+</style>
+<div class="app-menu navbar-menu">
+    <div class="navbar-brand-box">
+        <a href="@Url.Action("Index", "Dashboard")" class="logo logo-dark">
+            <span class="logo-sm">
+                <img src="~/assets/images/WarrantySm.png" alt="" height="50">
+            </span>
+            <span class="logo-lg">
+                <img src="~/assets/images/Warranty.png" alt="" height="45">
+            </span>
+        </a>
+        <a href="@Url.Action("Index", "Dashboard")" class="logo logo-light">
+            <span class="logo-sm">
+                <img src="~/assets/images/WarrantySm.png" alt="" height="50">
+            </span>
+            <span class="logo-lg">
+                <img src="~/assets/images/Warranty.png" alt="" height="45">
+            </span>
+        </a>
+        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover hide" id="vertical-hover">
+            <i class="ri-record-circle-line"></i>
+        </button>
+
+    </div>
+
+    <div id="scrollbar" data-simplebar="init" class="h-100">
+        <div class="container-fluid">
+            <div id="two-column-menu">
+            </div>
+            @if (Model != null && Model.Any())
+            {
+                <ul class="navbar-nav" id="navbar-nav" data-simplebar="init">
+                    @foreach (var item in Model.Where(x => x.ParentId == 0))
+                    {
+                        @if (item.HaveChild)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link menu-link" href="#@(item.MenuNameId)"
+                                   href="@(Url.Content(item.MenuUrl))"
+                                   data-bs-toggle="collapse" role="button" aria-expanded="false"
+                                   aria-controls="@(item.MenuNameId)">
+                                    <i class="@(item.Icon)"></i>
+                                    <span data-key="t-@(item.MenuNameId)">
+                                        @item.MenuName
+                                    </span>
+                                </a>
+                                <div class="collapse menu-dropdown" id="@(item.MenuNameId)">
+                                    <ul class="nav nav-sm flex-column">
+                                        @foreach (var subMenu in Model.Where(x => x.ParentId == item.MenuId).OrderBy(x => x.DisplayOrder))
+                                        {
+                                            <li class="nav-item">
+                                                <a href="@(Url.Content(subMenu.MenuUrl))" data-key="t-@(subMenu.MenuNameId)"
+                                                   class="nav-link">
+                                                    <i class="@(subMenu.Icon)"></i>
+                                                    @subMenu.MenuName
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link menu-link" asp-action="Table" asp-controller="Common" asp-route-table="@item.MenuUrl">
+                                    <i class="@(item.Icon)"></i>
+                                    <span>
+                                        @item.MenuName
+                                    </span>
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+    <div class="sidebar-background"></div>
+</div>
+<div class="vertical-overlay"></div>

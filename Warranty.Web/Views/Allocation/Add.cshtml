@@ -1,0 +1,174 @@
+﻿@using Warranty.Common.Utility;
+@using Warranty.Repository.Models;
+@model AllocationViewModel
+@{
+
+    string title = Model.IsEdit ? "Edit" : "Add New";
+    ViewBag.Title = title + " Territory Allocation";
+    ViewBag.PageName = $"<i class='las la-address-card'></i> {title}Territory Allocation";
+    ViewBag.ParentPageName = "<i class='las la-home'></i> Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <style>
+        tr td, th {
+            padding: .35rem .6rem !important;
+        }
+
+        .actionwidth {
+            min-width: 55px !important;
+            max-width: 55px !important;
+        }
+
+        .createdwidth {
+            min-width: 120px !important;
+            max-width: 120px !important;
+        }
+
+        .iconColorpadding {
+            padding: 3px;
+            font-size: 13px;
+            border-radius: 50%;
+        }
+
+        input[type="checkbox"] {
+            width: 20px; /*Desired width*/
+            height: 20px; /*Desired height*/
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        @@media (min-width: 320px) and (max-width: 375px) {
+            .col-4 {
+                width: 90.333333% !important;
+            }
+
+            .custom-card {
+                padding-left: 25px;
+            }
+
+            .col-3 {
+                width: 100% !important;
+                display: block !important;
+                margin-bottom: 15px !important;
+            }
+
+            .custom-items {
+                flex-direction: column !important; /* Force column layout for the card header */
+                align-items: flex-start !important; /* Align text to the start */
+            }
+        }
+
+        @@media (min-width: 375px) and (max-width: 600px) {
+            .col-4 {
+                width: 55.333333% !important;
+            }
+
+            .col-3 {
+                width: 100% !important;
+                display: block !important;
+                margin-bottom: 15px !important;
+            }
+
+            .custom-items {
+                flex-direction: column !important; /* Force column layout for the card header */
+                align-items: flex-start !important; /* Align text to the start */
+            }
+        }
+    </style>
+    <link href="~/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    }
+<form class="validation-wizard form-horizontal form-material needs-validation" id="ServiceEngineerForm">
+    <!--Row Start-->
+
+    <div class="row g-3">
+        <!--Col Start-->
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex" style="padding:0.7rem">
+                    <div>
+                        <a asp-action="Index" asp-controller="Allocation" class="btn btn-info btn-sm pull-left" style="margin-right: 20px;">
+                            <i class="ri-arrow-left-line"></i> Back
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="col-3">
+                        <h5 class="card-title mb-0 flex-grow-1">Enginner Name: <span>@Model.EnggMastModel.EnggName</span></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-2">
+        <!--Col Start-->
+        <div class="card">
+            <div class="card-header align-items-center d-flex" style="padding:0.7rem">
+                <h4 class="card-title mb-0 flex-grow-1">District/State Details</h4>
+                <div class="flex-shrink-0">
+                    <button type="button" id="addProbBtn" class="btn btn-secondary btn-sm la-pull-right" onclick="Warranty.Allocation.AddDistrictState('@Model.EnggMastModel.EnggId')">
+                        <i class="ri-add-line"></i> Add District/State Details
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="divDistrictAllocationList"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+    <script src="~/assets/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="~/js/jquery-validation/dist/jquery.validate.min.js"></script>
+
+    <script src="~/js/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/jquery-validation-unobtrusive/jquery.inputmask.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/jquery.inputmask.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.date.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.numeric.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.phone.extensions.js" asp-append-version="true"></script>
+
+    <script src="~/js/custom/Warranty.Engineer.js"></script>
+    <script src="~/js/custom/warranty.common.js"></script>
+    <script src="~/js/custom/Warranty.Allocation.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            Warranty.Allocation.DistrictStateList('@Model.EnggMastModel.EnggId');
+
+            // Other custom code
+            $("#txtSearch").on("keyup", function () {
+                Warranty.Allocation.Search();
+            });
+
+            var searchId = $("#searchId").detach();
+            $(".txtSearchId").prepend(searchId);
+        });
+    </script>
+
+
+    <script src="~/assets/libs/cleave.js/cleave.min.js"></script>
+
+}

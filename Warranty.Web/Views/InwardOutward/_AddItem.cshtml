@@ -1,0 +1,44 @@
+﻿@model Warranty.Web.Models.InwardOutwardViewModel
+
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="myModalLabel">
+        <i class='fas fa-user font-20'></i> Inward / Outward Item Details
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+<form class="validation-wizard form-horizontal form-material needs-validation" id="ItemForm">
+    <div class="modal-body">
+        <input asp-for="InwardOutwardItemModel.InwardOutwardId" type="hidden" />
+        <input asp-for="InwardOutwardItemModel.InwardOutwardItemId" type="hidden" />
+
+        <div class="row">        
+            <div class="col-xxl-12 mb-3">
+                <label asp-for="InwardOutwardItemModel.ProductMasterId">Product Name</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="InwardOutwardItemModel.ProductMasterId" required asp-items="Model.ProductList" id="ProductMasterId">
+                    <option value="">Select Product Name</option>
+                </select>
+                <span class="text-danger" asp-validation-for="InwardOutwardItemModel.ProductMasterId"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xxl-12 mb-3">
+                <label asp-for="InwardOutwardItemModel.Price">Price</label> <span class="text-danger"> *</span>
+                <input asp-for="InwardOutwardItemModel.Price" autocomplete="off" class="form-control req-border" id="Price" readonly>
+                <span class="text-danger" asp-validation-for="InwardOutwardItemModel.Price"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xxl-12 mb-3">
+                <label asp-for="InwardOutwardItemModel.Qty">Quantity </label> <span class="text-danger"> *</span>
+                <input asp-for="InwardOutwardItemModel.Qty" autocomplete="off" class="form-control req-border" required>
+                <span class="text-danger" asp-validation-for="InwardOutwardItemModel.Qty"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success " onclick="Warranty.InwardOutward.SaveItem()"><i class="ri-save-line"></i> Save</button>
+        <button type="button" class="btn btn-danger waves-effect" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+    </div>
+</form>

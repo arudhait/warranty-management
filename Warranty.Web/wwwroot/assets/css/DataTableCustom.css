@@ -1,0 +1,87 @@
+﻿
+.container-fluid {
+    padding-left: 0px;
+}
+
+tr.group,
+tr.group:hover {
+    background-color: #e2e2e2 !important;
+}
+
+.table thead th {
+    padding: 0.5rem;
+    font-size: 14px;
+    font-weight: 800 !important;
+}
+
+tbody {
+    cursor: pointer;
+}
+
+.table td {
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.table thead th {
+    white-space: nowrap;
+}
+
+.table td {
+    padding: 0.2rem 0.5rem !important;
+    border-top: 1px solid #e9ecef;
+    color: #111;
+}
+
+
+.table td, .table th {
+    padding: 0.5rem;
+    vertical-align: middle;
+    border-top: 1px solid #e9ecef;
+}
+
+
+.table tr {
+    padding: 0.5rem;
+    vertical-align: middle;
+    border-top: 1px solid #e9ecef;
+}
+
+div.dataTables_wrapper div.dataTables_processing {
+    top: 200px !important;
+}
+
+.dataTables_info {
+    font-size: 12px;
+    margin-top: 6px !important;
+}
+
+ul {
+    margin-bottom: 0px !important;
+}
+
+.pagination {
+    float: right;
+}
+
+.dataTables_length {
+    font-size: 12px;
+}
+.dataTables_length label {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.dataTables_length select {
+    display: inline-block;
+    vertical-align: middle;
+    width: 70%;
+}
+div.dataTables_wrapper div.dataTables_info {
+    padding-top: 5px;
+    white-space: pre-wrap;
+}
+.customDataTableDiv {
+    min-height: 300px !important;
+    overflow:auto !important;
+}

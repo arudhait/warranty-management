@@ -1,0 +1,83 @@
+﻿@model Warranty.Web.Models.UserMastViewModel
+
+<script src="~/assets/js/pages/password-addon.init.js"></script>
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title " id="myModalLabel">
+        <i class='fas fa-user font-20'></i> @(Model.IsEdit ? "Edit" : "Add New") User
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+
+<form class="validation-wizard form-horizontal form-material needs-validation " id="AddUserform">
+    <div class="modal-body">
+        <input asp-for="UserMaster.EncId" type="hidden" />
+        <input asp-for="UserMaster.CreatedBy" type="hidden" />
+        <input asp-for="UserMaster.CreatedDate" type="hidden" />
+        <div class="mb-3">
+            <label asp-for="UserMaster.UserName"> User Name </label> <span class="text-danger">*</span>
+            <input asp-for="UserMaster.UserName" autocomplete="off" class="form-control req-border" required>
+            <span class="text-danger" asp-validation-for="UserMaster.UserName"></span>
+        </div>
+      
+        <div class="mb-3">
+            <label asp-for="UserMaster.Email">Email Id</label>
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"><i class="ri-user-3-line"></i></span>
+                <input asp-for="UserMaster.Email" autocomplete="off" class="form-control form-floating req-border">
+            </div>
+            <span class="text-danger" asp-validation-for="UserMaster.Email"></span>
+        </div>
+        @if (!Model.IsEdit)
+        {
+            <div class="row g-3 mb-3">
+                <div class="col-xxl-6">
+                    <label asp-for="UserMaster.UserPassword">User Password</label> <span class="text-danger"> *</span>
+                    <div class="input-group auth-pass-inputgroup">
+                        <span class="input-group-text password-addon" id="password-addon" style="cursor:pointer;"><i class="ri-eye-line align-middle toggle-password"></i></span>
+                        <input type="password" asp-for="UserMaster.UserPassword" autocomplete="off" class="form-control req-border password-input" placeholder="Enter New password" required>
+
+                    </div>
+                    <span class="text-danger" asp-validation-for="UserMaster.UserPassword"></span>
+                    <div class="invalid-feedback">
+                        <span asp-validation-for="UserMaster.UserPassword"></span>
+                    </div>
+                </div>
+                <div class="col-xxl-6">
+                    <label class="form-label" for="validationCustomUsername">Confirm Password</label>
+                    <div class="input-group auth-pass-inputgroup">
+                        <span class="input-group-text password-addon" id="password-addon" style="cursor:pointer;"><i class="ri-eye-line align-middle toggle-password"></i></span>
+                        <input type="Password" id="passwordTextConfirm" asp-for="UserMaster.ConfirmPassword" class="form-control form-floating pe-5 password-input" placeholder="Enter Confirm Password" id="validationCustomUsername" required>
+                        <div class="invalid-feedback">
+                            <span asp-validation-for="UserMaster.ConfirmPassword"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="UserMaster.RoleId">Select Role</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="UserMaster.RoleId" required asp-items="Model.RoleList" id="RoleId">
+                    <option value="">Select Role</option>
+                </select>
+                <span class="text-danger" asp-validation-for="UserMaster.RoleId"></span>
+            </div>
+            <div class="col-xxl-6">
+                <label for="status-field" class="form-label">Status(Active/In-Active)</label><span class="text-danger"> *</span>
+                <select class="form-select" aria-label="IsActive" id="txtIsActive" asp-for="UserMaster.IsActive" required>
+                    <option selected>Select Status</option>
+                    <option value="true">Active</option>
+                    <option value="false">In-Active</option>
+                </select>
+                <span class="text-danger" asp-validation-for="UserMaster.IsActive"></span>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+        <button type="button" class="btn btn-success " onclick="Warranty.UserMaster.Save()"><i class="ri-save-line"></i> Submit</button>
+    </div>
+</form>
+

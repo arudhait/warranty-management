@@ -1,0 +1,367 @@
+﻿@using Warranty.Common.Utility;
+@model WarrantyListViewModel
+@{
+    string title = Model.IsEdit ? "Edit" : "Add New";
+    ViewBag.Title = title + " Warranty List";
+    ViewBag.PageName = $"<i class='las la-address-card'></i> {title} Warranty List";
+    ViewBag.ParentPageName = "<i class='las la-home'></i> Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles {
+    <style>
+        tr td, th {
+            padding: .35rem .6rem !important;
+        }
+
+        .actionwidth {
+            min-width: 55px !important;
+            max-width: 55px !important;
+        }
+
+        .createdwidth {
+            min-width: 120px !important;
+            max-width: 120px !important;
+        }
+
+        .iconColorpadding {
+            padding: 3px;
+            font-size: 13px;
+            border-radius: 50%;
+        }
+
+        .form-floating > .form-control:not(:placeholder-shown) ~ label::after {
+            content: none !important;
+        }
+    </style>
+    <link href="~/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" />
+}
+<form class="validation-wizard form-horizontal form-material needs-validation" id="WarrantyListForm">
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Warranty Details</h4>
+                </div>
+                <div class="card-body">
+                    <input type="hidden" asp-for="WarrantyDetailsModel.CreatedBy" />
+                    <input type="hidden" asp-for="WarrantyDetailsModel.CreatedDate" />
+                    <input type="hidden" asp-for="WarrantyDetailsModel.EncId" />
+                    <input type="hidden" asp-for="WarrantyDetailsModel.WarrantyId" class="form-control" id="hidWarrantyId">
+
+                    <div class="row">
+                        <!-- Doctor Name -->
+                        <div class="col-lg-12 mb-3">
+                            <div class="form-floating">
+                                <select class="form-select req-border" asp-for="WarrantyDetailsModel.CustId" asp-items="Model.DocotorList" id="DoctorName" disabled>
+                                    <option>Select Doctor Name</option>
+                                </select>
+                                <label>Doctor Name<span class="text-danger"> *</span></label>
+                            </div>
+                            <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.CustId"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Selling Date -->
+                        <div class="col-lg-4 mb-3">
+                            <div class="form-floating">
+                                <input type="date" asp-for="WarrantyDetailsModel.SellingDate" id="SellingDate" class="form-control" disabled />
+                                <label>Selling Date<span class="text-danger"> *</span></label>
+                            </div>
+                            <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.SellingDate"></span>
+                        </div>
+
+                        <!-- Start Date -->
+                        <div class="col-lg-4 mb-3">
+                            <div class="form-floating">
+                                <input type="date" asp-for="WarrantyDetailsModel.StartDate" id="StartDate" class="form-control" disabled />
+                                <label>Start Date<span class="text-danger"> *</span></label>
+                            </div>
+                            <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.StartDate"></span>
+                        </div>
+
+                        <!-- End Date -->
+                        <div class="col-lg-4 mb-3">
+                            <div class="form-floating">
+                                <input type="date" asp-for="WarrantyDetailsModel.EndDate" id="EndDate" class="form-control" disabled />
+                                <label>End Date<span class="text-danger"> *</span></label>
+                            </div>
+                            <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.EndDate"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Installed By -->
+                        <div class="col-lg-6 mb-3">
+                            <div class="form-floating">
+                                <select class="form-select req-border" asp-for="WarrantyDetailsModel.InstalledBy" asp-items="Model.EngeeList" id="InstalledBy" disabled>
+                                    <option>Select Installed By</option>
+                                </select>
+                                <label>Installed By</label>
+                            </div>
+                            <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.InstalledBy"></span>
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="floatingSelect" asp-for="WarrantyDetailsModel.NoOfServices" aria-label="Floating label select example" disabled>
+                                    <option value="0">Select No Of Service</option>
+                                    <option value="@((int)Enumeration.NoOfService.One)">1</option>
+                                    <option value="@((int)Enumeration.NoOfService.Two)">2</option>
+                                    <option value="@((int)Enumeration.NoOfService.Three)">3</option>
+                                    <option value="@((int)Enumeration.NoOfService.Four)">4</option>
+                                    <option value="@((int)Enumeration.NoOfService.Five)">5</option>
+                                    <option value="@((int)Enumeration.NoOfService.Six)">6</option>
+                                    <option value="@((int)Enumeration.NoOfService.Seven)">7</option>
+                                    <option value="@((int)Enumeration.NoOfService.Eight)">8</option>
+                                    <option value="@((int)Enumeration.NoOfService.Nine)">9</option>
+                                    <option value="@((int)Enumeration.NoOfService.Ten)">10</option>
+                                    <option value="@((int)Enumeration.NoOfService.Eleven)">11</option>
+                                    <option value="@((int)Enumeration.NoOfService.Twelve)">12</option>
+                                </select>
+                                <label>No Of Services</label>
+                            </div>
+                            <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.NoOfServices"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- CRM No -->
+                        <div class="col-lg-6 mb-3">
+                            <div class="form-floating">
+                                <input asp-for="WarrantyDetailsModel.CrmNo" autocomplete="off" class="form-control req-border" disabled>
+                                <label>CRM No</label>
+                            </div>
+                            <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.CrmNo"></span>
+                        </div>
+
+                        <!-- Interval -->
+                        <div class="col-lg-6 mb-3">
+                            <div class="form-floating">
+                                <input asp-for="WarrantyDetailsModel.Interval" autocomplete="off" class="form-control req-border" disabled>
+                                <label>Interval (In Months)</label>
+                            </div>
+                            <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.Interval"></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Contract Details Section -->
+                <div id="contractDetails" style="display: none;">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Contract Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12 mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select req-border" asp-for="WarrantyDetailsModel.ContractDetModel.ContractTypeId" asp-items="Model.ContractTypeList" id="ContractTypeId" disabled>
+                                        <option value="">Select Contract Type By</option>
+                                    </select>
+                                    <label>Contract Type By</label>
+                                </div>
+                                <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.ContractDetModel.ContractTypeId"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Amount Field -->
+                            <div class="col-lg-4 mb-3">
+                                <div class="form-floating">
+                                    <input asp-for="WarrantyDetailsModel.ContractDetModel.Amount" autocomplete="off" class="form-control req-border" disabled>
+                                    <label>Amount</label>
+                                </div>
+                                <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.ContractDetModel.Amount"></span>
+                            </div>
+                            <!-- Invoice No Field -->
+                            <div class="col-lg-4 mb-3">
+                                <div class="form-floating">
+                                    <input asp-for="WarrantyDetailsModel.ContractDetModel.InvoiceNo" autocomplete="off" class="form-control req-border" disabled>
+                                    <label>Invoice No</label>
+                                </div>
+                                <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.ContractDetModel.InvoiceNo"></span>
+                            </div>
+                            <!-- Cheque Details Field -->
+                            <div class="col-lg-4 mb-3">
+                                <div class="form-floating">
+                                    <input asp-for="WarrantyDetailsModel.ContractDetModel.ChequeDet" autocomplete="off" class="form-control req-border" disabled>
+                                    <label>Cheque Details</label>
+                                </div>
+                                <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.ContractDetModel.ChequeDet"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Start Date Field -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-floating">
+                                    <input type="date" asp-for="WarrantyDetailsModel.ContractDetModel.StartDate" id="StartDate" class="form-control" disabled />
+                                    <label>Start Date</label>
+                                </div>
+                                <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.ContractDetModel.StartDate"></span>
+                            </div>
+                            <!-- End Date Field -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-floating">
+                                    <input type="date" asp-for="WarrantyDetailsModel.ContractDetModel.EndDate" id="EndDate" class="form-control" disabled />
+                                    <label>End Date</label>
+                                </div>
+                                <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.ContractDetModel.EndDate"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Amount Excluding Tax Field -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-floating">
+                                    <input asp-for="WarrantyDetailsModel.ContractDetModel.AmtExcludTax" autocomplete="off" class="form-control req-border" disabled>
+                                    <label>Amount Excluding Tax</label>
+                                </div>
+                                <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.ContractDetModel.AmtExcludTax"></span>
+                            </div>
+                            <!-- Number of Services Field -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select" asp-for="WarrantyDetailsModel.ContractDetModel.NoOfService" aria-label="Floating label select example" disabled>
+                                        <option value="0">Select No Of Service</option>
+                                        <option value="@((int)Enumeration.NoOfService.One)">1</option>
+                                        <option value="@((int)Enumeration.NoOfService.Two)">2</option>
+                                        <option value="@((int)Enumeration.NoOfService.Three)">3</option>
+                                        <option value="@((int)Enumeration.NoOfService.Four)">4</option>
+                                        <option value="@((int)Enumeration.NoOfService.Five)">5</option>
+                                        <option value="@((int)Enumeration.NoOfService.Six)">6</option>
+                                        <option value="@((int)Enumeration.NoOfService.Seven)">7</option>
+                                        <option value="@((int)Enumeration.NoOfService.Eight)">8</option>
+                                        <option value="@((int)Enumeration.NoOfService.Nine)">9</option>
+                                        <option value="@((int)Enumeration.NoOfService.Ten)">10</option>
+                                        <option value="@((int)Enumeration.NoOfService.Eleven)">11</option>
+                                        <option value="@((int)Enumeration.NoOfService.Twelve)">12</option>
+                                    </select>
+                                    <label>No Of Services</label>
+                                </div>
+                                <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.ContractDetModel.NoOfService"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Taken By Field -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select req-border" asp-for="WarrantyDetailsModel.ContractDetModel.TakenBy" asp-items="Model.EngeeList" id="TakenBy" disabled>
+                                        <option>Select Taken By</option>
+                                    </select>
+                                    <label>Taken By</label>
+                                </div>
+                                <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.ContractDetModel.TakenBy"></span>
+                            </div>
+                            <!-- Interval Field -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-floating">
+                                    <input asp-for="WarrantyDetailsModel.ContractDetModel.Interval" autocomplete="off" class="form-control req-border" disabled>
+                                    <label>Intervals(In Months)</label>
+                                </div>
+                                <span class="text-danger border-danger" asp-validation-for="WarrantyDetailsModel.ContractDetModel.Interval"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Index" asp-controller="Due_ExpiredWarranty" class="btn pull-left btn-danger custom-btn">
+                        <i class="ri-forbid-line"></i> Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header align-items-center d-flex" style="padding:0.7rem">
+                    <h4 class="card-title mb-0 flex-grow-1">Model Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="divModelList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header align-items-center d-flex" style="padding:0.7rem">
+                    <h4 class="card-title mb-0 flex-grow-1">Prob Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="divProbList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+    <script src="~/assets/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="~/js/jquery-validation/dist/jquery.validate.min.js"></script>
+
+    <script src="~/js/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/jquery-validation-unobtrusive/jquery.inputmask.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/jquery.inputmask.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.date.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.numeric.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.phone.extensions.js" asp-append-version="true"></script>
+
+    <script src="~/js/custom/Warranty.Due_ExpiredWarranty.js"></script>
+
+    <script>
+        $(document).ready(function () {
+           
+            Warranty.Due_ExpiredWarranty.InitializeWarrantyTables({});
+            Warranty.Due_ExpiredWarranty.ModelList('@Model.WarrantyDetailsModel.WarrantyId');
+            Warranty.Due_ExpiredWarranty.ProbList('@Model.WarrantyDetailsModel.WarrantyId');
+
+            
+            var today = new Date().toISOString().split('T')[0];
+
+            $('#SellingDate').val(today);
+            $('#StartDate').val(today);
+            $('#EndDate').val(today);
+
+           
+            $("#txtSearch").on("keyup", function () {
+                Warranty.WarrantyList.Search();
+            });
+
+            var searchId = $("#searchId").detach();
+            $(".txtSearchId").prepend(searchId);
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const contractTypeSelect = document.getElementById('ContractTypeId');
+            const contractDetails = document.getElementById('contractDetails');
+
+            contractTypeSelect.addEventListener('change', function () {
+               
+                if (this.value) {
+                    contractDetails.style.display = 'block'; 
+                } else {
+                    contractDetails.style.display = 'none'; 
+                }
+            });
+
+          
+            contractTypeSelect.dispatchEvent(new Event('change'));
+        });
+    </script>
+
+    <script src="~/assets/libs/cleave.js/cleave.min.js"></script>
+
+}

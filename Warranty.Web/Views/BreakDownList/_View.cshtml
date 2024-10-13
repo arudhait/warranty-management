@@ -1,0 +1,138 @@
+﻿@model BreakDownListViewModel
+@using Warranty.Common.Utility
+
+@section cphPageHead {
+    <style>
+        @@media only screen and (min-width: 768px) {
+            .formwidth {
+                width: 75%;
+            }
+        }
+    </style>
+}
+
+<script src="~/assets/js/pages/password-addon.init.js"></script>
+
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title " id="myModalLabel">
+        <i class='fas fa-user font-20'></i>  Breakdown List
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+
+<form class="validation-wizard form-horizontal form-material needs-validation formwidth" id="BreakdownListForm">
+
+    <div class="modal-body">
+        <input asp-for="BreakdownDetModel.EncId" type="hidden" />
+        <input asp-for="BreakdownDetModel.CreatedBy" type="hidden" />
+        <input asp-for="BreakdownDetModel.CreatedDate" type="hidden" />
+      
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12 mb-3">
+                <label asp-for="BreakdownDetModel.CustId">Doctor</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="BreakdownDetModel.CustId" asp-items="Model.GetCustomerList" disabled id="TypeId">
+                    <option value="">Select State</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.CustId"></span>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6 mb-3">
+                <label asp-for="BreakdownDetModel.CallRegDate">Call Reg Date</label> <span class="text-danger"> *</span>
+                <input type="date" asp-for="BreakdownDetModel.CallRegDate" autocomplete="off" class="form-control req-border text-uppercase" date-format="m/d/y" disabled>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.CallRegDate"></span>
+            </div>
+
+            <div class="col-xxl-6 mb-3">
+                <label asp-for="BreakdownDetModel.TypeId">Select breakdown Type</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="BreakdownDetModel.TypeId" disabled asp-items="Model.GetBreakdownTypeList" id="TypeId">
+                    <option value="">Select BreakDown Type</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.TypeId"></span>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="BreakdownDetModel.EnggId">Select Engineer</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="BreakdownDetModel.EnggId" disabled asp-items="Model.GetEngineerList" id="EngineerId">
+                    <option value="">Select Contract Type</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.EnggId"></span>
+            </div>
+
+            <div class="col-xxl-6">
+                <label asp-for="BreakdownDetModel.EnggFirstVisitDate">Engineer First Visit Date</label> <span class="text-danger"> *</span>
+                <input type="date" asp-for="BreakdownDetModel.EnggFirstVisitDate" autocomplete="off" class="form-control req-border text-uppercase" date-format="m/d/y" disabled>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.EnggFirstVisitDate"></span>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-lg-12">
+                <label asp-for="BreakdownDetModel.CrmNo">CRM No</label> <span class="text-danger"> *</span>
+                <input type="text" asp-for="BreakdownDetModel.CrmNo" autocomplete="off" class="form-control req-border text-uppercase" date-format="m/d/y" disabled>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.CrmNo"></span>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12">
+                <label asp-for="BreakdownDetModel.Problems">Analysis or Problem Identified</label><span class="text-danger"> *</span>
+                <textarea class="form-control" asp-for="BreakdownDetModel.Problems" rows="4" disabled></textarea>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.Problems"></span>
+                <div class="invalid-feedback">
+                    Please enter the qualification details.
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="BreakdownDetModel.ReqAction">Required Action</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="BreakdownDetModel.ReqAction" asp-items="Model.GetActionMastList" disabled id="ActionId">
+                    <option value="">Select Required Action</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.ReqAction"></span>
+            </div>
+
+            <div class="col-xxl-6">
+                <label asp-for="BreakdownDetModel.ActionTaken">Take Action</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="BreakdownDetModel.ActionTaken" asp-items="Model.GetActionMastList" disabled id="ActionId">
+                    <option value="">Select Required Action</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.ActionTaken"></span>
+            </div>
+        </div>
+
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-6">
+                <label asp-for="BreakdownDetModel.Conclusion">Required Action</label> <span class="text-danger"> *</span>
+                <select class="form-select  txtborder text-uppercase req-border" asp-for="BreakdownDetModel.Conclusion" disabled id="ConclusionId">
+                    <option value="">Select Conclusion</option>
+                    <option value="@((int)Enumeration.Conclusion.Continue)">Continue</option>
+                    <option value="@((int)Enumeration.Conclusion.Close)">Close</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.Conclusion"></span>
+            </div>
+
+            <div class="col-xxl-6">
+                <label for="status-field" class="form-label">Status(Active/In-Active)</label><span class="text-danger"> *</span>
+                <select class="form-select" aria-label="IsActive" id="txtIsActive" asp-for="BreakdownDetModel.IsActive" disabled>
+                    <option selected>Select Status</option>
+                    <option value="true" selected>Active</option>
+                    <option value="false">In-Active</option>
+                </select>
+                <span class="text-danger" asp-validation-for="BreakdownDetModel.IsActive"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+    </div>
+</form>

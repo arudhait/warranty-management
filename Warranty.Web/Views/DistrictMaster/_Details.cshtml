@@ -1,0 +1,61 @@
+﻿@model Warranty.Web.Models.DistrictMastViewModel
+
+
+@section cphPageHead {
+    <style>
+        @@media only screen and (min-width: 768px) {
+            .formwidth {
+                width: 75%;
+            }
+        }
+    </style>
+}
+
+
+<script src="~/assets/js/pages/password-addon.init.js"></script>
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title " id="myModalLabel">
+        <i class='fas fa-user font-20'></i> @(Model.IsEdit ? "Edit" : "Add New") District
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+
+<form class="validation-wizard form-horizontal form-material needs-validation formwidth" id="DistrictForm">
+
+    <div class="modal-body">
+        <input asp-for="DistrictMastModel.EncId" type="hidden" />
+        <input asp-for="DistrictMastModel.CreatedBy" type="hidden" />
+        <input asp-for="DistrictMastModel.CreatedDate" type="hidden" />
+
+
+        <div class="col-xxl-12 mb-3">
+            <label asp-for="DistrictMastModel.StateId">State Name</label> <span class="text-danger"> *</span>
+            <select class="form-select  txtborder text-uppercase req-border" asp-for="DistrictMastModel.StateId" required asp-items="Model.StateList" id="StateId">
+                <option value="">Select State</option>
+            </select>
+            <span class="text-danger" asp-validation-for="DistrictMastModel.StateId"></span>
+        </div>
+
+        <div class="col-xxl-12 mb-3">
+            <label asp-for="DistrictMastModel.DistrictName">District Name</label> <span class="text-danger"> *</span>
+            <input asp-for="DistrictMastModel.DistrictName" autocomplete="off" class="form-control req-border text-uppercase" required>
+            <span class="text-danger" asp-validation-for="DistrictMastModel.DistrictName"></span>
+        </div>
+        <div class="col-xxl-12">
+            <label for="status-field" class="form-label">Status(Active/In-Active)</label> <span class="text-danger"> *</span>
+            <select class="form-select" aria-label="IsActive" id="txtIsActive" asp-for="DistrictMastModel.IsActive" required>
+                <option >Select Status</option>
+                <option value="true" selected>Active</option>
+                <option value="false">In-Active</option>
+            </select>
+            <div class="invalid-feedback">
+                <span asp-validation-for="DistrictMastModel.IsActive"></span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+        <button type="button" class="btn btn-success " onclick="Warranty.DistrictMast.Save()"><i class="ri-save-line"></i> Submit</button>
+    </div>
+</form>

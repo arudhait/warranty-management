@@ -1,0 +1,113 @@
+﻿<!-- JAVASCRIPT -->
+
+<script src="~/js/jquery/dist/jquery.min.js"></script>
+<script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/assets/libs/simplebar/simplebar.min.js"></script>
+<script src="~/assets/libs/node-waves/waves.min.js"></script>
+<script src="~/assets/libs/feather-icons/feather.min.js"></script>
+<script src="~/assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
+<script src="~/assets/js/plugins.js"></script>
+<script src="~/assets/js/pages/password-addon.init.js"></script>
+<script src="~/assets/libs/particles.js/particles.js"></script>
+<script src="~/assets/js/pages/particles.app.js"></script>
+
+<script src="~/assets/js/pages/form-validation.init.js"></script>
+<script src="~/js/aes.js"></script>
+
+
+<script src="~/js/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/js/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<script src="~/js/custom/Warranty.Common.js"></script>
+<script src="~/js/custom/Warranty.js"></script>
+<script src="~/assets/libs/sweetalert2/sweetalert2.all.min.js"></script>
+
+
+<!-- App js -->
+<script src="~/assets/js/app.js"></script>
+
+
+<script>
+    function UrlContent(url) {
+        return "@Url.Content("~/")" + url
+    }
+    (function () {
+        initActiveMenu();
+        InitValidation();
+    })();
+    function InitValidation() {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        forms.forEach(form => {
+            form.addEventListener(
+                'submit',
+                event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                },
+                false
+            );
+        });
+    }
+
+
+    function initActiveMenu() {
+        var currentPath = location.pathname == "/" ? "/Dashboard/Index" : location.pathname.substring(1);
+        if (currentPath) {
+            // navbar-nav
+            var a = document.getElementById("navbar-nav").querySelector('[href="' + "/" + currentPath + '"]');
+            if (a) {
+                a.classList.add("active");
+                var parentCollapseDiv = a.closest(".collapse.menu-dropdown");
+                if (parentCollapseDiv) {
+                    parentCollapseDiv.classList.add("show");
+                    parentCollapseDiv.parentElement.children[0].classList.add("active");
+                    parentCollapseDiv.parentElement.children[0].setAttribute("aria-expanded", "true");
+                    if (parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown")) {
+                        parentCollapseDiv.parentElement.closest(".collapse").classList.add("show");
+                        if (parentCollapseDiv.parentElement.closest(".collapse").previousElementSibling)
+                            parentCollapseDiv.parentElement.closest(".collapse").previousElementSibling.classList.add("active");
+
+                        if (parentCollapseDiv.parentElement.parentElement.parentElement.parentElement.closest(".collapse.menu-dropdown")) {
+                            parentCollapseDiv.parentElement.parentElement.parentElement.parentElement.closest(".collapse").classList.add("show");
+                            if (parentCollapseDiv.parentElement.parentElement.parentElement.parentElement.closest(".collapse").previousElementSibling) {
+
+                                parentCollapseDiv.parentElement.parentElement.parentElement.parentElement.closest(".collapse").previousElementSibling.classList.add("active");
+                                if ((document.documentElement.getAttribute("data-layout") == "horizontal") && parentCollapseDiv.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.closest(".collapse")) {
+                                    parentCollapseDiv.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.closest(".collapse").previousElementSibling.classList.add("active")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //function OnThemeColorChanges() {
+    //    var IsLight = false;
+    //    if ($("html").attr("data-bs-theme") === "dark") {
+    //        IsLight = true
+    //    }
+    //    $.ajax({
+    //        type: "GET",
+    //        data: {
+    //            IsLight: IsLight,
+    //        },
+    //        url: UrlContent("Common/ThemeColorChanges"),
+    //        success: function (data) {
+    //        }
+    //    })
+    //}
+    //$(document).ready(function () {
+    //    var databstheme = $("#databsthemeHidId").val()
+    //    if (databstheme == 'True') {
+    //        $("html").attr("data-bs-theme", "light")
+    //    } else {
+    //        $("html").attr("data-bs-theme", "dark")
+    //    }
+    //});
+</script>

@@ -1,0 +1,218 @@
+﻿@using Warranty.Common.Utility;
+@model LedgerViewModel
+
+
+@{
+    ViewBag.Title = "Inventory List";
+    ViewBag.pTitle = "Inventory List";
+    ViewBag.pageTitle = "Ledger";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <!--datatable css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+
+    <style>
+        .pointermouse {
+            cursor: pointer;
+        }
+
+        .accordion-header {
+            line-height: 0.4;
+        }
+
+        .lefticon-accordion .accordion-button:not(.collapsed)::after {
+            top: 14px !important;
+        }
+
+        .accordion-body {
+            padding-top: 5px !important;
+            padding-bottom: 0px !important;
+        }
+
+        .hide {
+            display: none
+        }
+
+        tr {
+            width: 100% !important;
+        }
+
+        .dataTables_length label {
+            margin-top: 0.25rem !important;
+            margin-bottom: 0rem !important;
+        }
+
+        .dataTables_info {
+            padding-top: 0.6rem !important
+        }
+
+        .form-control {
+            padding: .25rem 2.7rem .25rem .9rem;
+        }
+
+        @@media (max-width: 768px) {
+            .col-1 {
+                width: 100%;
+            }
+
+            .col-2 {
+                width: 100%;
+            }
+
+            .dataTables_info {
+                padding-right: 3rem;
+                margin-left: 3rem;
+                padding-top: 0.6rem !important;
+            }
+
+            .dataTables_length {
+                display: none;
+            }
+
+            .pagination {
+                --vz-pagination-padding-x: 7px !important;
+            }
+        }
+
+        @@media (min-width: 768px) and (max-width: 1200px) {
+
+            .col-1 {
+                width: 50%;
+            }
+
+            .col-2 {
+                width: 50%;
+            }
+
+            .dataTables_info {
+                padding-right: 7rem;
+                margin-left: -76px;
+                padding-top: 0.6rem !important;
+            }
+
+            .dataTables_length {
+                display: none;
+            }
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0"><i class="bx bx-book-content">&nbsp;</i>@ViewBag.pTitle</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><i class="las la-cog">&nbsp;</i><a href="@Url.Action("Index", "Dashboard")">@ViewBag.pagetitle</a></li>
+                    <li class="breadcrumb-item"><i class="bx bx-book-content">&nbsp;</i><a href="javascript: void(0);">@ViewBag.pTitle</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <h5 class="card-title mb-0 flex-grow-1">Inventory List</h5>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="hide" id="searchId">
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <input class="form-control" id="txtSearch" asp-for="TempFilterModel.SearchText" />
+                                    <span class="input-group-text" id="basic-addon2" onclick="Warranty.Ledger.Search()"><i class="ri-search-line"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <div class="col-12">
+                                <div class="dataTables_wrapper dt-bootstrap4 no-footer top_pagging">
+                                </div>
+                            </div>
+                            <div class="col-12 tblscrollFixed dataTables_wrapper dt-bootstrap4 no-footer table-responsive scrollbar">
+                                <table id="LedgerTable" class="table table-bordered nowrap table-striped align-middle dt-responsive" style="width:100%">
+                                    <thead class="fixedthead table-light">
+                                        <tr>
+                                            <th>Action</th>
+                                            <th>Product Name</th>
+                                            <th>Qty</th>
+                                            <th>Price</th>
+                                            <th>Type</th>
+                                            <th>Date</th>
+                                            <th>Is Credit</th>
+                                            <th>Remarks</th>
+                                            <th>Inward-Outward Item Id</th>
+                                            <th>Created By</th>
+                                            <th>Created On</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                    <tfoot id="tablefoxot" class="highlight" style="background-color:darkgray;overflow-y:scroll">
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!--datatable js-->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+    <script src="~/js/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/js/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="~/js/jquery-validation-unobtrusive/jquery.inputmask.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/jquery.inputmask.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.date.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.numeric.extensions.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-validation-unobtrusive/inputmask.phone.extensions.js" asp-append-version="true"></script>
+
+    <script src="~/js/custom/Warranty.Common.js"></script>
+    <script src="~/js/custom/Warranty.Ledger.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            Warranty.Ledger.Init({
+
+            });
+
+            $("#txtSearch").on("keyup", function () {
+                Warranty.Ledger.Search();
+            });
+
+            var searchId = $("#searchId").detach();
+            $(".txtSearchId").prepend(searchId);
+        });
+    </script>
+
+    <script src="~/assets/libs/cleave.js/cleave.min.js"></script>
+
+
+}

@@ -1,0 +1,49 @@
+﻿@using Warranty.Common.Utility;
+@model Warranty.Web.Models.ModelMasterViewModel
+
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="myModalLabel">
+        <i class='las la-box font-20'></i> @(Model.IsEdit ? "Edit" : "Add New") Model
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+<form class="validation-wizard form-horizontal form-material needs-validation" id="ModelMasterForm">
+    <div class="modal-body">
+        <input asp-for="ModelMasterModel.EncId" type="hidden" />
+        <input asp-for="ModelMasterModel.CreatedBy" type="hidden" />
+        <input asp-for="ModelMasterModel.CreatedDate" type="hidden" />
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12">
+                <label asp-for="ModelMasterModel.ModelNo">Model No.</label> <span class="text-danger"> *</span>
+                <input asp-for="ModelMasterModel.ModelNo" class="form-control req-border" required>
+                <span class="text-danger" asp-validation-for="ModelMasterModel.ModelNo"></span>
+                <div class="invalid-feedback">
+                    Please enter Model No.
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xxl-12">
+            <label for="status-field" class="form-label">Status(Active/InActive)</label><span class="text-danger"> *</span>
+            <select class="form-select" aria-label="IsActive" id="txtIsActive" asp-for="ModelMasterModel.IsActive" required>
+                <option>Select Status</option>
+                <option value="true" selected>Active</option>
+                <option value="false">In-Active</option>
+            </select>
+            <span class="text-danger" asp-validation-for="ModelMasterModel.IsActive"></span>
+            <div class="invalid-feedback">
+                Please select a status.
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+        <button type="button" class="btn btn-success " onclick="Warranty.ModelMaster.Save()"><i class="ri-save-line"></i> Submit</button>
+    </div>
+</form>
+
+

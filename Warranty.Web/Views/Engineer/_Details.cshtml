@@ -1,0 +1,49 @@
+﻿@using Warranty.Common.Utility;
+@model Warranty.Web.Models.EnggMastViewModel
+
+<div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="myModalLabel">
+        <i class='las la-box font-20'></i> @(Model.IsEdit ? "Edit" : "Add New") Engineer
+        <i class="fa fa-close" data-dismiss="modal" style="cursor:pointer;float:right"></i>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+</div>
+<form class="validation-wizard form-horizontal form-material needs-validation" id="EngineerForm">
+    <div class="modal-body">
+        <input asp-for="EnggMastModel.EncId" type="hidden" />
+        <input asp-for="EnggMastModel.CreatedBy" type="hidden" />
+        <input asp-for="EnggMastModel.CreatedDate" type="hidden" />
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12">
+                <label asp-for="EnggMastModel.EnggName">Engineer Name</label> <span class="text-danger"> *</span>
+                <input asp-for="EnggMastModel.EnggName" class="form-control req-border" required>
+                <span class="text-danger" asp-validation-for="EnggMastModel.EnggName"></span>
+                <div class="invalid-feedback">
+                    Please enter the Engineer name.
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-xxl-12">
+                <label for="status-field" class="form-label">Status(Active/In-Active)</label><span class="text-danger"> *</span>
+                <select class="form-select" aria-label="IsActive" id="txtIsActive" asp-for="EnggMastModel.IsActive" required>
+                    <option>Select Status</option>
+                    <option value="true" selected>Active</option>
+                    <option value="false">In-Active</option>
+                </select>
+                <span class="text-danger" asp-validation-for="EnggMastModel.IsActive"></span>
+                <div class="invalid-feedback">
+                    Please select a status.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-forbid-line"></i> Cancel</button>
+        <button type="button" class="btn btn-success " onclick="Warranty.Engineer.Save()"><i class="ri-save-line"></i> Submit</button>
+    </div>
+</form>
+
